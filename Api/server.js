@@ -4,7 +4,11 @@ import mongoose from 'mongoose'
 import bodyParser from  "express"
 import userRouter from './routes/user.js'
 import ProductRouter  from './routes/product.js'
+import cartRouter from './routes/cart.js'
+
+
 const app=express();
+
 app.use(bodyParser.json())
 //home testing route
 app.get("/",(req,res)=>{
@@ -17,6 +21,8 @@ app.use("/api/user",userRouter)
 // addproduct Router
 app.use("/api/product",ProductRouter) 
 
+//addToCart router
+app.use("/api/cart",cartRouter)
 
 
 mongoose.connect("mongodb+srv://pratapsuryawanshi007:onzkR6JQOQ0aXlF1@cluster0.5parnxe.mongodb.net/",{
