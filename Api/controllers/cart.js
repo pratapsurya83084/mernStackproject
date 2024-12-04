@@ -48,7 +48,7 @@ export const UserCart =async (req,res)=>{
 
 export const removeproductFromCart = async (req, res) => {
   const productId = req.params.productId; // product cart userId 
-  const userId = "668a30a38084015a34b38fcf";
+  // const userId = "668a30a38084015a34b38fcf";
   const cart = await Cart.findOne({ userId });
   
   if (!cart) {
@@ -64,9 +64,9 @@ export const removeproductFromCart = async (req, res) => {
 
 //clear all cart items
 export const clearCart = async (req, res) => {
- // const productId = req.params.productId; // product cart userId 
-  const userId = "66819439a7c6bd0f8c6426ca";
-  let cart = await Cart.findOne({userId})
+ const productId = req.params.productId; // product cart userId 
+  // const userId = "66819439a7c6bd0f8c6426ca";
+  let cart = await Cart.findOne({productId})
   
   
   if (!cart) {
@@ -84,34 +84,41 @@ export const clearCart = async (req, res) => {
 };
 
 //decrese qty from cart
+// no work
 export const decreaseProductqty = async (req, res) => {
-  // take input to added product into card
-  const {  qty,  productid } = req.body;
+  const { qty, productid } = req.body; // Quantity to decrease and product ID
+const userId=req.params.productid;
+  // const userId = "668a30a38084015a34b38fcf"; // Replace with dynamic user ID as needed
 
-  const userId = "668a30a38084015a34b38fcf";  //this userId stored its own cart items ,suppose useid change according to stored cartitem in db
-  
-  
+  // Find the user's cart
   let cart = await Cart.findOne({ userId });
+  
   if (!cart) {
-    cart = new Cart({ userId, items: [] }); // userId, items is model array to store the items detail
+    // No cart found for the user
+    return res.status(404).json({ message: "Cart not found for user" });
   }
-  
+
+  // Find the index of the item to decrease qty
   const itemIndex = cart.items.findIndex(
-    (index) => index.productid && index.productid.toString() === productid  // Check for undefined productid
+    (item) => item.productid && item.productid.toString() === productid
   );
-  
-  if (itemIndex === -1) {  //> -1
-    // Item does not exist in cart, add new item
-    cart.items.push({ title, price, qty, imgsrc, productid });
+
+  if (itemIndex === -1) {
+    // Item not found in the cart
+    return res.status(404).json({ message: "Product not found in cart" });
   } else {
-    // Item exists in cart, update its quantity
-    cart.items[itemIndex].qty += qty;
-    cart.items[itemIndex].qty*qty;
+    // Decrease the quantity of the item
+    cart.items[itemIndex].qty -= qty;
+
+    // If the quantity is 0 or less, remove the item from the cart
+    if (cart.items[itemIndex].qty <= 0) {
+      cart.items.splice(itemIndex, 1);
+    }
   }
   
-  await cart.save(); // Ensure the changes are saved to the database
-  
+  // Save the updated cart to the database
+  await cart.save();
+
+  // Return the updated cart
   res.json({ message: "Cart updated successfully", cart });
-  
-  return cart;
-}
+};

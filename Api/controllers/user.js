@@ -1,7 +1,7 @@
 import { User } from "../models/User.js";
 import bcrypt from "bcryptjs";
-
-//register user 
+import jwt from "jsonwebtoken";
+//register user
 export const register = async (req, res) => {
   const { name, email, password } = req.body; //take input from user
   try {
@@ -32,16 +32,24 @@ export const Userlogin = async (req, res) => {
 
   try {
     let user = await User.findOne({ email });
-   if (!user)
-    return res.json({message:"User is not find",success:false})
-      const validPassword = await bcrypt.compare(password, user.password);
-   
-      if (!validPassword) 
-        return res.json({message:"invalid creadential",success:false });
-        res.json({message:`welcome ${user.name}`,sucess:true})    
+    if (!user)
+      return res.json({
+        message: "User is not find",
+        success: false,
+      });
+    const validPassword = await bcrypt.compare(password, user.password);
 
+    if (!validPassword)
+      return res.json({ message: "invalid creadential", success: false });
 
+    const token = jwt.sign(
+      { userId: user._id },
+       "!#&#%^()@&*",
+      { expiresIn:'1d'}
+  
+  );
 
+    res.json({ message: `welcome ${user.name}`, token, sucess: true });
   } catch (error) {
     return res.json({
       message: error.message,
@@ -49,13 +57,12 @@ export const Userlogin = async (req, res) => {
   }
 };
 
-
-//get all users 
-export const allUsers=async(req,res)=>{
+//get all users
+export const allUsers = async (req, res) => {
   try {
-    const users = await User.find().sort({createdAt:-1});  //get all registered user detail from db
-    res.json({users,success:true})
+    const users = await User.find().sort({ createdAt: -1 }); //get all registered user detail from db
+    res.json({ users, success: true });
   } catch (error) {
-    res.json({message:error.message})
+    res.json({ message: error.message });
   }
-}
+};

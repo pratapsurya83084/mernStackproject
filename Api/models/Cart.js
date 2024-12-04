@@ -3,10 +3,23 @@ import mongoose from "mongoose";
 const cartitemSchema = new mongoose.Schema(
   {
     productid: { type: mongoose.Schema.Types.ObjectId,ref: "Product",},
-    title: {type: String,require: true },
-    price: { type: Number, require: true },
-    qty: { type: Number, require: true },
-    imgsrc: { type: String, require: true },
+    title: {
+      type: String,
+      require: true
+     },
+
+    price: { 
+      type: Number,
+       require: true
+       },
+    qty: { 
+      type: Number,
+       require: true
+       },
+    imgsrc: {
+       type: String, 
+       require: true
+       },
   },
   { timestamps: true }
 );
