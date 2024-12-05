@@ -4,8 +4,9 @@ export const addTocart = async (req, res) => {
   // take input to added product into card
   const { title, price, qty, imgsrc, productid } = req.body;
 
-  const userId = "668a30a38084015a34b38fcf";  //this userId stored its own cart items ,suppose useid change according to stored cartitem in db
+  const userId =req.user ;  //"668a30a38084015a34b38fcf" this userId stored its own cart items ,suppose useid change according to stored cartitem in db
 
+  console.log(userId);
   
   let cart = await Cart.findOne({ userId });
   if (!cart) {
@@ -33,7 +34,7 @@ export const addTocart = async (req, res) => {
 }
 //get user cart
 export const UserCart =async (req,res)=>{
-  const userId = "668a2333975a90e1f02f0d6f"; //product cart userId 
+  const userId = req.user; //product cart userId 
   const cart = await Cart.findOne({ userId });
   if (!cart) {
     res.json({message:"product is not exists in the cart.... "})
@@ -47,8 +48,8 @@ export const UserCart =async (req,res)=>{
 //delete/remove  product from cart
 
 export const removeproductFromCart = async (req, res) => {
-  const productId = req.params.productId; // product cart userId 
-  // const userId = "668a30a38084015a34b38fcf";
+  // const productId = req.params.productId; // product cart userId 
+  const userId = req.user;
   const cart = await Cart.findOne({ userId });
   
   if (!cart) {
@@ -65,8 +66,8 @@ export const removeproductFromCart = async (req, res) => {
 //clear all cart items
 export const clearCart = async (req, res) => {
  const productId = req.params.productId; // product cart userId 
-  // const userId = "66819439a7c6bd0f8c6426ca";
-  let cart = await Cart.findOne({productId})
+  const userId = req.user
+  let cart = await Cart.findOne({userId})
   
   
   if (!cart) {
@@ -87,8 +88,8 @@ export const clearCart = async (req, res) => {
 // no work
 export const decreaseProductqty = async (req, res) => {
   const { qty, productid } = req.body; // Quantity to decrease and product ID
-const userId=req.params.productid;
-  // const userId = "668a30a38084015a34b38fcf"; // Replace with dynamic user ID as needed
+// const userId=req.params.productid;
+  const userId = req.user; // Replace with dynamic user ID as needed
 
   // Find the user's cart
   let cart = await Cart.findOne({ userId });

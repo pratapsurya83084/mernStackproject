@@ -5,7 +5,7 @@ import bodyParser from  "express"
 import userRouter from './routes/user.js'
 import ProductRouter  from './routes/product.js'
 import cartRouter from './routes/cart.js'
-
+import addressRouter from './routes/Address.js'
 
 const app=express();
 
@@ -24,6 +24,8 @@ app.use("/api/product",ProductRouter)
 //addToCart router
 app.use("/api/cart",cartRouter)
 
+//address
+app.use("/api/address",addressRouter)
 
 mongoose.connect("mongodb+srv://pratapsuryawanshi007:onzkR6JQOQ0aXlF1@cluster0.5parnxe.mongodb.net/",{
     dbName:"mern_ecomerce"

@@ -9,14 +9,14 @@ router.post("/add",Authenticated,addTocart)
 
 
 //get user cart product
-router.get("/userCart",UserCart)
+router.get("/userCart",Authenticated,UserCart)
 
 //remove from cart Router
-router.delete("/removeCart/:productId",removeproductFromCart)
+router.delete("/removeCart/:productId",Authenticated,removeproductFromCart)
 
 //remove all items from cart
-router.delete("/clear",clearCart)
+router.delete("/clear",Authenticated,clearCart)
 
 //decrese item qty
-router.post("/--qty",decreaseProductqty)
+router.post("/--qty",Authenticated,decreaseProductqty)
 export default router 
