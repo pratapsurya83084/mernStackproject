@@ -66,3 +66,10 @@ export const allUsers = async (req, res) => {
     res.json({ message: error.message });
   }
 };
+
+//get profile User
+export const profile=async(req,res)=>{
+  //return current login user
+ res.json({ user: req.user})
+
+}
