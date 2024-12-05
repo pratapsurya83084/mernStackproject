@@ -6,8 +6,16 @@ import userRouter from './routes/user.js'
 import ProductRouter  from './routes/product.js'
 import cartRouter from './routes/cart.js'
 import addressRouter from './routes/Address.js'
-
+import cors from "cors";
 const app=express();
+
+// app.use(cors(
+//     {
+//         origin: "http://localhost:5173",
+//         methods: ["GET", "POST", "PUT", "DELETE"],
+//         credentials: true,
+//     }
+// ));
 
 app.use(bodyParser.json())
 //home testing route

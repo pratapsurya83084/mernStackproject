@@ -9,11 +9,10 @@
   "name": "api",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "author": "pratap suryawanshi",
   "license": "ISC",
