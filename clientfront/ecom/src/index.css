@@ -1,4 +1,9 @@
 body{
-  background-color: black;
+  background-color:rgb(53, 52, 52);
+  color: black;
+}
+
+.btn-purple {
+  background-color: #6f42c1; /* Purple color */
   color: white;
 }

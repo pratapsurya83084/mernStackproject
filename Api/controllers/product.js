@@ -1,4 +1,5 @@
 import { Products } from "../models/Product.js";
+import mongoose from "mongoose";
 
 //add product
 export const addProduct = async (req, res) => {
@@ -24,25 +25,33 @@ export const addProduct = async (req, res) => {
 };
 
 //get all products
+
 export const getAllProduct = async (req, res) => {
   try {
-    const getAllproduct = await Products.find().sort({ createdAt: -1 });
-    res.json({ message: "successfullly get all products", getAllproduct });
+    // Fetch all products sorted by creation date (newest first)
+    const products = await Products.find().sort({ createdAt: -1 });
+    if (products.length === 0) {
+      return res.status(404).json({ message: "No products found." });
+    }
+    return res.status(200).json({ message: "Successfully retrieved all products.", products });
   } catch (error) {
-    res.json({ message: "...product is not found.....", error });
+    // Return a proper error response in case of server error
+    return res.status(500).json({ message: "Error retrieving products.", error: error.message });
   }
 };
 
+
 // find product by id 
 export const getProductById = async (req, res) => {
-//   try {
+
     const id = req.params.id;
 
     const product = await Products.findById(id);
     if (!product) return res.json({ message: "Invalid id......" });
     return res.json({ message: "specific products", product });
-//   } catch (error) {}
+
 };
+
 
 //update product by id
 export const updateproductById = async (req, res) => {
