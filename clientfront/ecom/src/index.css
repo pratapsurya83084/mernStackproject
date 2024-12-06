@@ -1,9 +1,84 @@
 body{
   background-color:rgb(53, 52, 52);
   color: black;
+user-select: none;
 }
+
 
 .btn-purple {
   background-color: #6f42c1; /* Purple color */
   color: white;
+}
+
+
+
+/* Navbar.css */
+.right-navbar {
+  position: fixed;
+  top: 0;
+  right: -100%; /* Hidden offscreen initially */
+  height: 100%;
+  width: 300px;
+  background-color: #f8f9fa; /* Light background */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  padding: 1rem;
+  z-index: 1050;
+}
+
+.right-navbar.open {
+  right: 0; /* Slide in when open */
+}
+
+.btn-close {
+  /* position: absolute; */
+  top: 10px;
+  right: 10px;
+  /* background: none; */
+  border: none;
+  font-size: 1.5rem;
+  float: right;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+
+.list-unstyled {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar.css */
+.custom-toggler {
+  background-color: black; /* Set background color to black */
+  border: none; /* Remove the default border */
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-color: white; /* Set the icon (bars) to white for contrast */
+}
+
+/* searchbar */
+.searchbar{
+  justify-content: center;
+  align-items: center;
+}
+.searchbar{
+  border: none;
+  background-color: rgb(169, 166, 166);
+  border-radius:50px ;
+  -webkit-border-radius:50px ;
+  -moz-border-radius:50px ;
+  -ms-border-radius:50px ;
+  -o-border-radius:50px ;
+}
+
+.searchbar input{
+  border: none;
+  border-radius: 30px;
+ background-color: rgb(169, 166, 166);
+}
+.searchbar input:focus{
+ outline: none;
+
+
 }
