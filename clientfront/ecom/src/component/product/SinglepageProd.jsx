@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
+import UserReviews from './UserReviews'
 const SinglepageProd = () => {
   const { products } = useContext(AppContext);
   const { id } = useParams();
@@ -116,7 +117,7 @@ const SinglepageProd = () => {
 
       {/* Product Reviews */}
       <div className="mt-5">
-        <h4 className="text-light">Customer Reviews</h4>
+        <h4 className="text-light fs-3">Top reviews from India</h4>
         {product.reviews && product.reviews.length > 0 ? (
           product.reviews.map((review, index) => (
             <div key={index} className="border p-3 mb-3 rounded">
@@ -130,7 +131,9 @@ const SinglepageProd = () => {
             </div>
           ))
         ) : (
-          <p className="text-light">No reviews yet.</p>
+          <p className="text-light">
+            <UserReviews/>
+            No reviews yet.</p>
         )}
       </div>
     </div>

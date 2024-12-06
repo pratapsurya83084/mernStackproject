@@ -1,12 +1,17 @@
 body{
-  background-color:rgb(53, 52, 52);
-  color: black;
+  background-color:rgb(82, 20, 197);
+  color: rgb(204, 200, 200);
 user-select: none;
 }
 
 
 .btn-purple {
   background-color: #6f42c1; /* Purple color */
+  color: white;
+}
+
+.btn-purple:hover {
+  background-color: #6128ca; /* Purple color */
   color: white;
 }
 
@@ -19,7 +24,9 @@ user-select: none;
   right: -100%; /* Hidden offscreen initially */
   height: 100%;
   width: 300px;
-  background-color: #f8f9fa; /* Light background */
+ 
+  background-color: #f8f9fa; 
+  /* Light background */
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transition: right 0.3s ease-in-out;
   padding: 1rem;
@@ -54,7 +61,8 @@ user-select: none;
 }
 
 .custom-toggler .navbar-toggler-icon {
-  background-color: white; /* Set the icon (bars) to white for contrast */
+  background-color: white;
+   /* Set the icon (bars) to white for contrast */
 }
 
 /* searchbar */
@@ -66,6 +74,8 @@ user-select: none;
   border: none;
   background-color: rgb(169, 166, 166);
   border-radius:50px ;
+ height: 40%;
+ width: 40%;
   -webkit-border-radius:50px ;
   -moz-border-radius:50px ;
   -ms-border-radius:50px ;

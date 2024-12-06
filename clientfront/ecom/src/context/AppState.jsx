@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AppState = ({ children }) => {
   const url = "http://localhost:1000/api";
 
   const [products, setProducts] = useState([]);
-
+  // const [user,setUsers]=useState([]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -27,10 +29,53 @@ const AppState = ({ children }) => {
     fetchProducts();
   }, []);
 
-  // console.log(products);
+// register 
+  const registerUser=async(name,email,password)=>{
+   
+    const api=await axios.post(`${url}/user/register`,
+      {name,email,password},
+      {
+        headers:{
+          'Content-Type':'application/json',
+        },
+        withCredentials:true,
+        // body:JSO({name,email,password})
+      }
+    );
+// alert(api.data.message)
+console.log("user register :",api);
+  };
   
+
+
+//login
+const loginUser=async(email,password)=>{
+   
+  const api=await axios.post(`${url}/user/login`,
+    {email,password},
+    {
+      headers:{
+        'Content-Type':'application/json',
+      },
+      withCredentials:true,
+      // body:JSO({name,email,password})
+    }
+  );
+// alert(api.data.message)
+console.log("user login :",api.data);
+if (api.data.success==false) {
+ alert("failed login .......") 
+}else{
+  alert("success login ....")
+ 
+}
+// console.log(api.data.success);
+
+};
+
+
   return (
-    <AppContext.Provider value={{ products }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ products,registerUser,loginUser }}>{children}</AppContext.Provider>
   );
 };
 

@@ -17,10 +17,10 @@ function App() {
           <Route path="/" element={<ShowProducts />} />
          
           <Route path="/productDetailpage/:id" element={<SinglepageProd />} />
-          <Route path="/product/search/:searchTerm" element={<SearchProduct />} />
-         
-          <Route path="/register" element={<Register />} />
+          <Route path="/product/search/:Term" element={<SearchProduct />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+         
           
         </Routes>
       </Router>

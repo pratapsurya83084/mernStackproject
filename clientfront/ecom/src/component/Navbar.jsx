@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  
+
   const [searchTerm, setSearchTerm] = useState(""); // Corrected the search term state initialization
-  
+
   // Submit handler for form submission
   const SubmitHandler = (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) { // Prevent submitting empty searches
+    if (searchTerm.trim()) {
+      // Prevent submitting empty searches
       navigate(`/product/search/${searchTerm}`);
     }
   };
@@ -49,11 +50,27 @@ const Navbar = () => {
 
           {/* Large Screen Buttons */}
           <div className="d-none d-lg-flex align-items-center">
-            <button className="btn btn-warning mx-2">Cart</button>
-            <button className="btn btn-warning mx-2">Profile</button>
-            <button className="btn btn-warning mx-2">Login</button>
-            <button className="btn btn-warning mx-2">Register</button>
-            <button className="btn btn-warning mx-2">Logout</button>
+            <Link to={"/cart"}>
+              {" "}
+              <button className="btn btn-warning mx-2">Cart</button>
+            </Link>
+            <Link to={"/profile"}>
+              {" "}
+              <button className="btn btn-warning mx-2">profile</button>
+            </Link>
+            <Link to={"/login"}>
+              {" "}
+              <button className="btn btn-warning mx-2">login</button>
+            </Link>
+            <Link to={"/register"}>
+              {" "}
+              <button className="btn btn-warning mx-2">register</button>
+            </Link>
+{/* 
+            <Link to={"/login"}> */}
+              {" "}
+              <button className="btn btn-warning mx-2">logout</button>
+            {/* </Link> */}
           </div>
 
           {/* Toggler (Small Screen) */}
