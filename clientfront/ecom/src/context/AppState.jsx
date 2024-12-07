@@ -7,7 +7,15 @@ const AppState = ({ children }) => {
   const url = "http://localhost:1000/api";
 
   const [products, setProducts] = useState([]);
-  // const [user,setUsers]=useState([]);
+  const [token, setToken] = useState([]);
+  // console.log(products);
+
+  // console.log(token);
+  const [isauthenticated, setisauthenticated] = useState(false);
+  
+  const [filteredData, setFilteredData] = useState([products]);
+  // console.log(filteredData);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -19,6 +27,7 @@ const AppState = ({ children }) => {
         });
 
         const res = response.data;
+        setFilteredData(res);
         setProducts(res.products);
         // console.log(res);
       } catch (error) {
@@ -29,53 +38,64 @@ const AppState = ({ children }) => {
     fetchProducts();
   }, []);
 
-// register 
-  const registerUser=async(name,email,password)=>{
-   
-    const api=await axios.post(`${url}/user/register`,
-      {name,email,password},
+  // register
+  const registerUser = async (name, email, password) => {
+    const api = await axios.post(
+      `${url}/user/register`,
+      { name, email, password },
       {
-        headers:{
-          'Content-Type':'application/json',
+        headers: {
+          "Content-Type": "application/json",
         },
-        withCredentials:true,
+        withCredentials: true,
         // body:JSO({name,email,password})
       }
     );
-// alert(api.data.message)
-console.log("user register :",api);
+    // alert(api.data.message)
+    return api.data;
+    // console.log("user register :",api.data);
   };
-  
 
+  //login
+  const loginUser = async (email, password) => {
+    const api = await axios.post(
+      `${url}/user/login`,
+      { email, password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        // body:JSO({name,email,password})
+      }
+    );
+    setToken(api.data.token);
+    setisauthenticated(true);
 
-//login
-const loginUser=async(email,password)=>{
-   
-  const api=await axios.post(`${url}/user/login`,
-    {email,password},
-    {
-      headers:{
-        'Content-Type':'application/json',
-      },
-      withCredentials:true,
-      // body:JSO({name,email,password})
-    }
-  );
-// alert(api.data.message)
-console.log("user login :",api.data);
-if (api.data.success==false) {
- alert("failed login .......") 
-}else{
-  alert("success login ....")
- 
-}
-// console.log(api.data.success);
+    // localstorage setToken
+    localStorage.setItem("token", JSON.stringify(api.data.token));
+    return api.data;
 
-};
+    // console.log("user login :",api.data);
 
+    // console.log(api.data.success);
+  };
 
   return (
-    <AppContext.Provider value={{ products,registerUser,loginUser }}>{children}</AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        products,
+        registerUser,
+        loginUser,
+        token,
+        setisauthenticated,
+        isauthenticated,
+        filteredData,
+        setFilteredData,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
   );
 };
 

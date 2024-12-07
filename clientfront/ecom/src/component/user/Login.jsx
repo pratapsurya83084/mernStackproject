@@ -2,30 +2,50 @@ import React, { useState, useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate=useNavigate();
   const { loginUser } = useContext(AppContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
 
     try {
       // console.log("Email:", email, "Password:", password);
       // Add your login logic here
-      loginUser(email, password);
-    
+    const result =await  loginUser(email, password);
+    // console.log(result);
+    if (result.sucess==true) {
+    toast.success(result.message +" "+`login successfull`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+   
+    // Show success toast
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  }
   
     } catch (error) {
       console.log("technically issue : ",error)
     }
+
+
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
      {/* Toast Container */}
-     {/* <ToastContainer /> */}
+     <ToastContainer />
       <div
         className="card p-4 shadow-lg"
         style={{ maxWidth: "400px", width: "100%" }}

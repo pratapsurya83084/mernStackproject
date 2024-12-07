@@ -1,5 +1,5 @@
 body{
-  background-color:rgb(82, 20, 197);
+  background-color:rgb(221, 219, 224);
   color: rgb(204, 200, 200);
 user-select: none;
 }
@@ -91,4 +91,37 @@ user-select: none;
  outline: none;
 
 
+}
+@media (min-width: 320px) {
+  .custom-cards {
+    max-width: 230px; /* Adjust the card width as desired */
+ 
+  }
+}
+@media (min-width: 375px) {
+  .custom-cards {
+    max-width: 230px; /* Adjust the card width as desired */
+  }
+}
+@media (min-width: 492px) {
+  .custom-cards {
+    max-width: 210px; /* Adjust the card width as desired */
+  }
+}
+
+/* custom cards size */
+@media (min-width: 492px) {
+  .custom-card {
+    max-width: 130px; /* Adjust the card width as desired */
+  }
+}
+@media (min-width: 692px) {
+  .custom-card {
+    max-width: 130px; /* Adjust the card width as desired */
+  }
+}
+@media (min-width: 992px) {
+  .custom-card {
+    max-width: 140px; /* Adjust the card width as desired */
+  }
 }

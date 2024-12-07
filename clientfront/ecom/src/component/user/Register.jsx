@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   const navigate = useNavigate(); // UseNavigate hook to navigate to login page after successful registration
 
@@ -11,7 +11,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState(""); // State to store error message
+  // const [error, setError] = useState(""); // State to store error message
 
   const { registerUser } = useContext(AppContext);
 
@@ -25,40 +25,65 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await registerUser(name, email, password);
-     
-      setError(""); // Clear error if the request is successful
-      // 
-    toast.success("Successfully registered", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    }); // Show success toast
-    navigate('/login')
+      const result= await registerUser(name, email, password);
+      // console.log(result.success);// true
+
+      // setError(""); // Clear error if the request is successful
+      if (result.success==true) {
+        toast.success("Successfully registered", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        // Show success toast
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message); // Set error message from the response
+        // setError(err.response.data.message); // Set error message from the response
+        toast.error(err.response.data.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(()=>{
+            navigate('/login')
+        },2000)
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        toast.error("An unexpected error occurred. Please try again.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     }
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-        <ToastContainer />
+      <ToastContainer />
       <div
         className="card p-4 shadow-lg"
         style={{ maxWidth: "400px", width: "100%" }}
       >
         <h3 className="text-center mb-4">Register</h3>
-       
-        {error && <div className="alert alert-danger">{error}</div>} {/* Display error message */}
-       
+
+        {/* /{error && <div className="alert alert-danger">{error}</div>} Display error message */}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
@@ -105,7 +130,7 @@ const Register = () => {
               required
             />
           </div>
-          <button  type="submit" className="btn btn-purple w-100">
+          <button type="submit" className="btn btn-purple w-100">
             Register
           </button>
         </form>

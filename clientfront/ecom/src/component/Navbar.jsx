@@ -1,9 +1,25 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+
 
 const Navbar = () => {
-  const navigate = useNavigate();
 
+
+  const navigate = useNavigate();
+  const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
+
+  // Function to handle showing and hiding the dropdown
+  const toggleDropdown = () => {
+    setIsProfileDropdownVisible((prevState) => !prevState);
+  };
+
+  // Function to close the dropdown when a link is clicked
+  const handleLinkClick = () => {
+    setIsProfileDropdownVisible(false);  // Hide dropdown when a link is clicked
+  };
   const [searchTerm, setSearchTerm] = useState(""); // Corrected the search term state initialization
 
   // Submit handler for form submission
@@ -66,10 +82,9 @@ const Navbar = () => {
               {" "}
               <button className="btn btn-warning mx-2">register</button>
             </Link>
-{/* 
-            <Link to={"/login"}> */}
-              {" "}
-              <button className="btn btn-warning mx-2">logout</button>
+            {/* 
+            <Link to={"/login"}> */}{" "}
+            <button className="btn btn-warning mx-2">logout</button>
             {/* </Link> */}
           </div>
 
@@ -84,6 +99,16 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
+
+
+
+
+
+
+
+
+
+
 
       {/* Sidebar for Small Screens */}
       <div className={`right-navbar ${isOpen ? "open" : ""}`}>
@@ -106,21 +131,60 @@ const Navbar = () => {
 
         {/* Navigation Buttons */}
         <ul className="list-unstyled">
-          <li>
-            <button className="btn btn-warning w-100 mb-2">Cart</button>
-          </li>
-          <li>
-            <button className="btn btn-warning w-100 mb-2">Profile</button>
-          </li>
-          <li>
-            <button className="btn btn-warning w-100 mb-2">Login</button>
-          </li>
-          <li>
-            <button className="btn btn-warning w-100 mb-2">Register</button>
-          </li>
-          <li>
-            <button className="btn btn-warning w-100 mb-2">Logout</button>
-          </li>
+
+          {/* /...............profile hover....................... */}
+       
+          <div className="relative">
+      {/* Profile Link */}
+      {/* <Link to={"/profile"} > */}
+        <div  onClick={toggleDropdown} className="text-dark d-flex align-items-center space-x-4">
+          <FontAwesomeIcon icon={faUser} />
+          <p className="mb-0">Profile</p>
+        </div>
+      {/* </Link> */}
+
+      {/* Dropdown Box */}
+      {isProfileDropdownVisible && (
+        <div className="absolute left-0 mt-2 p-2 bg-white rounded-5 border border-gray-300 rounded-lg shadow-lg">
+          <Link to={"/login"} onClick={handleLinkClick}>
+            <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">Login</p>
+          </Link>
+          <Link to={"/register"} onClick={handleLinkClick}>
+            <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">Register</p>
+          </Link>
+          <Link to={"/logout"} onClick={handleLinkClick}>
+            <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">Logout</p>
+          </Link>
+          <Link to={"/savecart"} className="list-none no-underline"  onClick={handleLinkClick}>
+            <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer ">saveCart</p>
+          </Link>
+        </div>
+      )}
+    </div>
+          <br />
+
+          <Link to={"/cart"}>
+            <div className="d-flex align-items-center ">
+              {" "}
+              {/* Use space-x-2 for a small gap */}
+              <FontAwesomeIcon  className="text-dark" icon={faShoppingCart} />
+              <p className="mb-0 text-dark  ">Cart</p>{" "}
+              {/* Remove default margin-bottom for better alignment */}
+            </div>
+          </Link>
+
+         
+         <li
+  className="text-dark"
+  style={{
+    cursor: "pointer",
+    marginTop: "20px", // Updated margin-top value
+    marginLeft: "4px",
+  }}
+>
+  order
+</li>
+
         </ul>
       </div>
     </div>
