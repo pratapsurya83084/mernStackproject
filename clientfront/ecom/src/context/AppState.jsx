@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 const AppState = ({ children }) => {
   const url = "http://localhost:1000/api";
 
@@ -12,9 +11,8 @@ const AppState = ({ children }) => {
 
   // console.log(token);
   const [isauthenticated, setisauthenticated] = useState(false);
-  
-  const [filteredData, setFilteredData] = useState([products]);
-  // console.log(filteredData);
+const [user,setUser]=useState();
+// console.log(user);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -27,8 +25,9 @@ const AppState = ({ children }) => {
         });
 
         const res = response.data;
-        setFilteredData(res);
+
         setProducts(res.products);
+        userProfile();
         // console.log(res);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -36,7 +35,7 @@ const AppState = ({ children }) => {
     };
 
     fetchProducts();
-  }, []);
+  }, [token]);
 
   // register
   const registerUser = async (name, email, password) => {
@@ -70,6 +69,8 @@ const AppState = ({ children }) => {
       }
     );
     setToken(api.data.token);
+    // console.log(api.data.token);
+    
     setisauthenticated(true);
 
     // localstorage setToken
@@ -81,6 +82,27 @@ const AppState = ({ children }) => {
     // console.log(api.data.success);
   };
 
+  //user Profile
+  const userProfile = async () => {
+    try {
+      const response = await axios.get(`${url}/user/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Auth":token,
+        },
+        withCredentials: true,
+      });
+
+      // const res = response.data;      
+      // console.log("user profile :",response.data.user);
+      setUser(response.data.user);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+
+
   return (
     <AppContext.Provider
       value={{
@@ -90,8 +112,7 @@ const AppState = ({ children }) => {
         token,
         setisauthenticated,
         isauthenticated,
-        filteredData,
-        setFilteredData,
+        setToken,
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import Register from './component/user/Register';
 import SinglepageProd from "./component/product/SinglepageProd";
 import Navbar from "./component/Navbar";
 import SearchProduct from "./component/product/SearchProduct";
-
+import Profile from './component//user/Profile';
 function App() {
   return (
   
@@ -20,7 +20,7 @@ function App() {
           <Route path="/product/search/:Term" element={<SearchProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-         
+          <Route path="/profile" element={<Profile />} />
           
         </Routes>
       </Router>

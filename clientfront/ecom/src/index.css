@@ -125,3 +125,53 @@ user-select: none;
     max-width: 140px; /* Adjust the card width as desired */
   }
 }
+
+/* user profile css */
+:root {
+  --primary-color: #4F46E5; /* Indigo */
+  --secondary-color: #F43F5E; /* Rose */
+  --background-color: #F9FAFB; /* Light Gray */
+  --card-bg-color: #FFFFFF; /* White */
+  --text-color: #1F2937; /* Dark Gray */
+  --subtext-color: #6B7280; /* Medium Gray */
+  --border-color: #E5E7EB; /* Light Gray */
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+.profile-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.profile-subtext {
+  color: var(--subtext-color);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #4338CA;
+}
+
+.btn-danger {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-danger:hover {
+  background-color: #D9304D;
+}
+
