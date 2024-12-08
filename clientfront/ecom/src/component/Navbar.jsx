@@ -44,6 +44,7 @@ const Navbar = () => {
   //logout
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userDetail")
     setToken(null);
     setisauthenticated(false);
     toast.error("logout successfully", {

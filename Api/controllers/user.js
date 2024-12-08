@@ -44,9 +44,10 @@ export const Userlogin = async (req, res) => {
 
     const token = jwt.sign(
       { userId: user._id },
-       "!#&#%^()@&*",
-      { expiresIn:'1d'}
-  
+      "#$#$#(*$",
+     
+      { expiresIn:'365d'}
+   
   );
 
     res.json({ message: `welcome ${user.name}`, token, sucess: true });

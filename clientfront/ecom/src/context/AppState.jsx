@@ -4,15 +4,14 @@ import axios from "axios";
 
 const AppState = ({ children }) => {
   const url = "http://localhost:1000/api";
-
+  const [isauthenticated, setisauthenticated] = useState(false);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState([]);
   // console.log(products);
 
   // console.log(token);
-  const [isauthenticated, setisauthenticated] = useState(false);
-const [user,setUser]=useState();
-// console.log(user);
+
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,11 +23,10 @@ const [user,setUser]=useState();
           withCredentials: true,
         });
 
-        const res = response.data;
+        const res = await response.data;
 
         setProducts(res.products);
         userProfile();
-        // console.log(res);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -51,8 +49,9 @@ const [user,setUser]=useState();
       }
     );
     // alert(api.data.message)
+    // console.log("user register :",api.data.user);
+    localStorage.setItem("userDetail", JSON.stringify(api.data.user));
     return api.data;
-    // console.log("user register :",api.data);
   };
 
   //login
@@ -69,8 +68,8 @@ const [user,setUser]=useState();
       }
     );
     setToken(api.data.token);
-    // console.log(api.data.token);
-    
+    console.log(api.data);
+
     setisauthenticated(true);
 
     // localstorage setToken
@@ -84,22 +83,29 @@ const [user,setUser]=useState();
 
   //user Profile
   const userProfile = async () => {
-    try {
-      const response = await axios.get(`${url}/user/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Auth":token,
-        },
-        withCredentials: true,
-      });
+    const token = localStorage.getItem("token");
+    console.log(token);
+    
+    const api = await axios.get(`${url}/user/profile`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Auth": token,
+      },
+      withCredentials: true,  // Allow cookies to be sent
+    });
+    
 
-      // const res = response.data;      
-      // console.log("user profile :",response.data.user);
-      setUser(response.data.user);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    console.log("user profile     ......",api.data);
   };
+
+
+
+
+
+
+
+
+
 
 
 
@@ -113,6 +119,7 @@ const [user,setUser]=useState();
         setisauthenticated,
         isauthenticated,
         setToken,
+        user,
       }}
     >
       {children}

@@ -1,9 +1,21 @@
-import React from "react";
-
-
+import React, { useEffect, useState } from "react";
+import {useNavigate } from 'react-router-dom'
 const Profile = () => {
+  const navigate=useNavigate()
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    // Retrieve and parse user data from localStorage
+    const userProfile = localStorage.getItem("userDetail");
+    
+    if (userProfile) {
+      setUser(JSON.parse(userProfile)); // Parse the user detail JSON string
+    }
+  }, []); // Empty dependency array to run only once when the component mounts
 
+  if (!user) {
+    return <div>User not found Loading...</div>; // Show loading message while fetching user data
+  }
 
   return (
     <div className="container py-5">
@@ -20,12 +32,11 @@ const Profile = () => {
                 />
               </div>
 
-           
               {/* Profile Info */}
               <div className="col-12 col-md-8 text-center text-md-start">
-                <h3 className="profile-header">John Doe</h3>
-                <p className="profile-subtext">johndoe@example.com</p>
-                <p className="profile-subtext">123 Main St, Springfield</p>
+                <h3 className="profile-header">{user.name}</h3>
+                <p className="profile-subtext">{user.email}</p>
+                <p className="profile-subtext">{user.address}</p>
                 <div className="d-flex justify-content-center justify-content-md-start mt-3">
                   <button className="btn btn-primary me-3">Edit Profile</button>
                   <button className="btn btn-danger">Logout</button>

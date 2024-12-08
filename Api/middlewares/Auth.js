@@ -1,27 +1,36 @@
-import { User } from '../models/User.js'
-import jwt from 'jsonwebtoken'
+import { User } from "../models/User.js";
+import jwt from "jsonwebtoken";
 //sent token into header
-export const Authenticated=async (req,res,next)=>{
- const token=req.header("Auth")
- if (!token) {
-    return res.json({message:"login first"})
- } 
+export const Authenticated = async (req, res, next) => {
+  const token = req.header("Auth");
 
- //verify token
- const decode=jwt.verify(token ,  "!#&#%^()@&*")//(token,secretKey)
-const UserId=decode.userId;
+  console.log("Token received  : ", token);
 
-let user =await User.findById(UserId)
-// console.log(user);
-if (!user) return response.json({message:"user not found"})
-//else save user
-req.user=user;
-next();
+  if (!token) {
+    return res.json({ message: "please login first" });
+  }
 
-
-//  console.log(decode);
+  try {
+   //verify token
+   const decode = jwt.verify(token,'#$#$#(*$'); //(token,secretKey)
+   console.log("decoded token is....: ",decode);
+   
+   const UserId = decode.userId;
  
-//  else{
-//    res.json({message:true,login:"successfull login",tokens:token})
-//  }
-}
+   let user = await User.findById(UserId);
+   // console.log(user);
+   if (!user) {
+     return response.json({ message: "user not found" });
+   } else {
+     req.user = user;
+    
+    
+     next();
+     res.json({ message: true, login: "successfull login", tokens: token });
+    }
+  } catch (error) {
+   console.error("Token verification failed:", error);
+   return res.status(401).json({ message: "Invalid or expired token" });
+   
+  }
+};
