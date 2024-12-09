@@ -50,7 +50,7 @@ export const Userlogin = async (req, res) => {
    
   );
 
-    res.json({ message: `welcome ${user.name}`, token, sucess: true });
+    res.json({name:`${user.name}`,email:`${user.email}`, message: `welcome ${user.name}`, token, sucess: true });
   } catch (error) {
     return res.json({
       message: error.message,
@@ -69,8 +69,19 @@ export const allUsers = async (req, res) => {
 };
 
 //get profile User
-export const profile=async(req,res)=>{
-  //return current login user
- res.json({ user: req.user})
+// export const profile=async(req,res)=>{
+//   //return current login user
+//  res.json({ user: req.user})
 
-}
+// }
+export const profile = async (req, res, next) => {
+  try {
+      const user = await User.findById(req.userId);
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+  } catch (error) {
+      next(error); // Pass error to the error-handling middleware
+  }
+};

@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
   const { token, setToken, setisauthenticated } = useContext(AppContext);
   //get toekn from localstorage
+// console.log(token);
 
   const navigate = useNavigate();
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
@@ -40,12 +41,12 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  //logout btm
+  //logout btn
   //logout
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userDetail")
-    setToken(null);
+    // setToken(tokn);
     setisauthenticated(false);
     toast.error("logout successfully", {
       position: "top-right",
@@ -87,7 +88,7 @@ const Navbar = () => {
 
           {/* Large Screen Buttons */}
           <div className="d-none d-lg-flex align-items-center">
-            {token ? (
+            {localStorage.getItem("token")? (
               <>
                 <ul className=" mx-2 text-dark " onClick={logout}>
                   <svg

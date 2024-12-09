@@ -23,10 +23,10 @@ export const Authenticated = async (req, res, next) => {
      return response.json({ message: "user not found" });
    } else {
      req.user = user;
-    
+     res.json({ message: true, login: "successfull login", tokens: token });
     
      next();
-     res.json({ message: true, login: "successfull login", tokens: token });
+    
     }
   } catch (error) {
    console.error("Token verification failed:", error);

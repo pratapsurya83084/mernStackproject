@@ -68,12 +68,14 @@ const AppState = ({ children }) => {
       }
     );
     setToken(api.data.token);
-    console.log(api.data);
+    console.log(api.data.name ," ",api.data.email," ",api.data.token);
 
     setisauthenticated(true);
 
     // localstorage setToken
     localStorage.setItem("token", JSON.stringify(api.data.token));
+    localStorage.setItem("userProfile", JSON.stringify(api.data))
+   
     return api.data;
 
     // console.log("user login :",api.data);
@@ -82,6 +84,15 @@ const AppState = ({ children }) => {
   };
 
   //user Profile
+
+
+useEffect(()=>{
+let  tokn=localStorage.getItem("token")
+
+setToken(tokn)
+},[])
+
+
   const userProfile = async () => {
     const token = localStorage.getItem("token");
     console.log(token);
@@ -89,13 +100,14 @@ const AppState = ({ children }) => {
     const api = await axios.get(`${url}/user/profile`, {
       headers: {
         "Content-Type": "application/json",
-        "Auth": token,
+        "Auth":localStorage.getItem("token").replace(/^"|"$/g, ""),
+       
       },
       withCredentials: true,  // Allow cookies to be sent
     });
-    
+    setUser(api.data);
 
-    console.log("user profile     ......",api.data);
+    console.log("user profile : ",api.data);
   };
 
 
@@ -119,7 +131,7 @@ const AppState = ({ children }) => {
         setisauthenticated,
         isauthenticated,
         setToken,
-        user,
+      user
       }}
     >
       {children}

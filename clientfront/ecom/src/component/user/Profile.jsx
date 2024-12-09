@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
-  const navigate=useNavigate()
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    address: "",
+  });
 
   useEffect(() => {
-    // Retrieve and parse user data from localStorage
-    const userProfile = localStorage.getItem("userDetail");
-    
-    if (userProfile) {
-      setUser(JSON.parse(userProfile)); // Parse the user detail JSON string
+    // Retrieve user data from localStorage and parse it
+    const userData = localStorage.getItem("userProfile");
+    if (userData) {
+      setUser(JSON.parse(userData));
     }
-  }, []); // Empty dependency array to run only once when the component mounts
+  }, []);
 
-  if (!user) {
-    return <div>User not found Loading...</div>; // Show loading message while fetching user data
-  }
+  const handleLogout = () => {
+    // Clear localStorage and redirect to login page
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   return (
     <div className="container py-5">
@@ -34,12 +41,14 @@ const Profile = () => {
 
               {/* Profile Info */}
               <div className="col-12 col-md-8 text-center text-md-start">
-                <h3 className="profile-header">{user.name}</h3>
-                <p className="profile-subtext">{user.email}</p>
-                <p className="profile-subtext">{user.address}</p>
+                <h3 className="profile-header">{user.name || "N/A"}</h3>
+                <p className="profile-subtext">{user.email || "N/A"}</p>
+                <p className="profile-subtext">{user.address || "N/A"}</p>
                 <div className="d-flex justify-content-center justify-content-md-start mt-3">
                   <button className="btn btn-primary me-3">Edit Profile</button>
-                  <button className="btn btn-danger">Logout</button>
+                  <button className="btn btn-danger" onClick={handleLogout}>
+                    Logout
+                  </button>
                 </div>
               </div>
             </div>
