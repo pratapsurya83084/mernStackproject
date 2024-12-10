@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from 'react';
+import AppContext  from '../../context/AppContext';  // Assuming you have the AppContext imported
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const { user } = useContext(AppContext);
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    address: "",
-  });
 
-  useEffect(() => {
-    // Retrieve user data from localStorage and parse it
-    const userData = localStorage.getItem("userProfile");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-  }, []);
+  console.log("This is auth user:", user);
 
   const handleLogout = () => {
-    // Clear localStorage and redirect to login page
-    localStorage.removeItem("userProfile");
-    localStorage.removeItem("token");
-    navigate("/login");
+    // Clear user data or token from localStorage, if needed
+    localStorage.removeItem('token');
+    // Redirect to login page
+    navigate('/login');
   };
 
+  
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
@@ -33,7 +25,7 @@ const Profile = () => {
               {/* Profile Image */}
               <div className="col-12 col-md-4 text-center">
                 <img
-                  src="https://via.placeholder.com/150"
+                  src={user?.profilePicture || "https://via.placeholder.com/150"}
                   alt="User Profile"
                   className="rounded-circle img-fluid border border-primary"
                 />
@@ -41,9 +33,10 @@ const Profile = () => {
 
               {/* Profile Info */}
               <div className="col-12 col-md-8 text-center text-md-start">
-                <h3 className="profile-header">{user.name || "N/A"}</h3>
-                <p className="profile-subtext">{user.email || "N/A"}</p>
-                <p className="profile-subtext">{user.address || "N/A"}</p>
+                <h3 className="profile-header">{user?.name || "N/A"}</h3>
+                <p className="profile-subtext">{user?.email || "N/A"}</p>
+                <p className="profile-subtext">login status : {user?.login || "N/A"}</p>
+
                 <div className="d-flex justify-content-center justify-content-md-start mt-3">
                   <button className="btn btn-primary me-3">Edit Profile</button>
                   <button className="btn btn-danger" onClick={handleLogout}>

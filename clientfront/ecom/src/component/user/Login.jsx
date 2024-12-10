@@ -34,6 +34,16 @@ const Login = () => {
     setTimeout(() => {
       navigate("/");
     }, 2000);
+  }else{
+    toast.error("Invalid credentials,please try again", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
   
     } catch (error) {

@@ -46,7 +46,7 @@ export const Userlogin = async (req, res) => {
       { userId: user._id },
       "#$#$#(*$",
      
-      { expiresIn:'365d'}
+      { expiresIn:'3d'}
    
   );
 

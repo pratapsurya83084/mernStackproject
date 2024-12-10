@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from "react";
+import AppContext from "../../context/AppContext";
 
 const Cart = () => {
-  return (
-    <div>
-cart...................................
-    </div>
-  )
-}
+  const { addToCart } = useContext(AppContext);
+ 
 
-export default Cart
+  useEffect(() => {});
+
+  return <div>cart...................................</div>;
+};
+
+export default Cart;

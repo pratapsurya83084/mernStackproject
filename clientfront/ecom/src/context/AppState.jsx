@@ -7,9 +7,6 @@ const AppState = ({ children }) => {
   const [isauthenticated, setisauthenticated] = useState(false);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState([]);
-  // console.log(products);
-
-  // console.log(token);
 
   const [user, setUser] = useState();
 
@@ -27,6 +24,7 @@ const AppState = ({ children }) => {
 
         setProducts(res.products);
         userProfile();
+        // addToCart();
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -68,14 +66,22 @@ const AppState = ({ children }) => {
       }
     );
     setToken(api.data.token);
-    console.log(api.data.name ," ",api.data.email," ",api.data.token);
+    console.log(api.data.name, " ", api.data.email, " ", api.data.token);
 
     setisauthenticated(true);
 
     // localstorage setToken
-    localStorage.setItem("token", JSON.stringify(api.data.token));
-    localStorage.setItem("userProfile", JSON.stringify(api.data))
-   
+    if(api.data.token){
+      localStorage.setItem("token", JSON.stringify(api.data.token));
+      localStorage.setItem("userProfile", JSON.stringify(api.data));
+      console.log("success");
+      
+    }else{
+      console.log("not logged failes ,please try again ....");
+      
+    }
+ 
+
     return api.data;
 
     // console.log("user login :",api.data);
@@ -83,43 +89,58 @@ const AppState = ({ children }) => {
     // console.log(api.data.success);
   };
 
+  //after 3 day token expire automatically
+  const threeDaysInMilliseconds = 3 * 24 * 60 * 60 * 1000;
+  setTimeout(() => {
+    localStorage.removeItem("token");
+  }, threeDaysInMilliseconds);
+
   //user Profile
 
+  useEffect(() => {
+    let tokn = localStorage.getItem("token");
 
-useEffect(()=>{
-let  tokn=localStorage.getItem("token")
-
-setToken(tokn)
-},[])
-
+    setToken(tokn);
+  }, []);
 
   const userProfile = async () => {
     const token = localStorage.getItem("token");
-    console.log(token);
-    
+    // console.log(token);
+
     const api = await axios.get(`${url}/user/profile`, {
       headers: {
         "Content-Type": "application/json",
-        "Auth":localStorage.getItem("token").replace(/^"|"$/g, ""),
-       
+        "Auth": localStorage.getItem("token").replace(/^"|"$/g, ""),
       },
-      withCredentials: true,  // Allow cookies to be sent
+      withCredentials: true, // Allow cookies to be sent
     });
     setUser(api.data);
 
-    console.log("user profile : ",api.data);
+    // console.log("user profile : ",api.data);
   };
 
-
-
-
-
-
-
-
-
-
-
+  //add tocart
+  const addToCart = async (title, price, qty, imgsrc, productid) => {
+   
+      const response = await axios.post(
+        `${url}/cart/add`, // Ensure `url` is correctly defined
+        { title, price, qty, imgsrc, productid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Auth": localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+          },
+        }
+      );
+  
+      if (response.data.cart) {
+        console.log("Cart updated successfully:", response.data.cart);
+      } else {
+        console.log("Unexpected response:", response.data);
+      }
+ 
+    }
+  
 
   return (
     <AppContext.Provider
@@ -131,7 +152,8 @@ setToken(tokn)
         setisauthenticated,
         isauthenticated,
         setToken,
-      user
+        user,
+        addToCart,
       }}
     >
       {children}

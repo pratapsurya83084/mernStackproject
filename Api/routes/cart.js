@@ -1,11 +1,11 @@
-import {addTocart,UserCart,removeproductFromCart,clearCart,decreaseProductqty} from '../controllers/cart.js'
+import {addToCart,UserCart,removeproductFromCart,clearCart,decreaseProductqty} from '../controllers/cart.js'
 import express from 'express'
 
-import { Authenticated } from '../middlewares/Auth.js'
+import { Authenticated,AuthCart } from '../middlewares/Auth.js'
 
 const router=express.Router()
 //add cart router
-router.post("/add",Authenticated,addTocart)
+router.post("/add",AuthCart,addToCart) //Authenticated
 
 
 //get user cart product
