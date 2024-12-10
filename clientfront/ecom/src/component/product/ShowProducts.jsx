@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const ShowProducts = () => {
-  const { products ,addToCart} = useContext(AppContext);
+  const { products, addToCart } = useContext(AppContext);
   // console.log(products);
-
+  // if (!localStorage.getItem("token")) {
+  //   navigate('/login')
+  // }
 
   return (
     <div className="container mt-4">
@@ -36,21 +39,30 @@ const ShowProducts = () => {
                 <p className="text-primary mb-2" style={{ fontSize: "0.8rem" }}>
                   ₹{product.price}
                 </p>
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() =>
-                    addToCart(
-                      product.title,
-                      product.price,
-                      1,
-                      product.imgsrc,
-                      product._id
-                      // "67534c15a0a28dda691d4ebe"
-                    )
-                  }
-                >
-                  Add to Cart
-                </button>
+
+                {localStorage.getItem("token") ? (
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() =>
+                      addToCart(
+                        product.title,
+                        product.price,
+                        1,
+                        product.imgsrc,
+                        product._id
+                      )
+                    }
+                  >
+                    Add to Cart
+                  </button>
+                ) : (
+                 <Link to="/login">
+                 <button className="btn btn-sm btn-primary" disabled>
+                    Add to Cart
+                  </button>
+                  </Link>
+                )}
+                <ToastContainer/>
               </div>
             </div>
           </div>

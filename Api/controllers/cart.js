@@ -57,55 +57,6 @@ export const addToCart = async (req, res) => {
   }
 };
 
-// import { Cart } from "../models/cart.js";
-
-// export const addToCart = async (req, res) => {
-//   const { productid, title, price, qty, imgsrc } = req.body;
-//    //for addtocart we need useris and productid
-
-// // console.log("",req.user);
-// if (!productid || !title || !price || !qty || !imgsrc) {
-//   console.log("allfild requires");
-// }
-
-//   const userId = req.user._id;
-//   // "6755c9edc70c072d37373a73";
-//   console.log("the user id is:",userId) //6758070c50ac7fb6c2216527
-
-// console.log("prod id : ",productid);
-
-
-// let cart= await Cart.findOne({userId});
-// if (!cart) {
-//   //create a new cart
-//   cart = new Cart({ userId, items: [] });
-// }
-
-// const itemindex = cart.items.findIndex((item)=>item.productid.toString() === productid.toString())
-
-// if (itemindex > -1) {
-//   cart.items[itemindex].qty +=qty;
-//   cart.items[itemindex].price += price *qty;
-// }else{
-//   cart.items.push({productid, title, price, qty, imgsrc});
-// }
-
-
-
-// await cart.save();
-// res.json({message:"items added to cart successfully",cart})
-
-// };
-
-
-
-
-
-
-
-
-
-
 //get user cart
 
 export const UserCart = async (req, res) => {

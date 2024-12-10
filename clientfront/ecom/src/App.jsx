@@ -9,7 +9,8 @@ import Navbar from "./component/Navbar";
 import SearchProduct from "./component/product/SearchProduct";
 import Profile from "./component//user/Profile";
 import ProtectedRoute from "./component/protectRoutes/ProtectedRouted";
-import Cart from "./component/product/Cart";
+import Cart from './component/Cart';
+
 function App() {
   return (
     <Router>

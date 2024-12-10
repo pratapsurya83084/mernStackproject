@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 import axios from "axios";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const AppState = ({ children }) => {
+
   const url = "http://localhost:1000/api";
   const [isauthenticated, setisauthenticated] = useState(false);
   const [products, setProducts] = useState([]);
   const [token, setToken] = useState([]);
 
   const [user, setUser] = useState();
+  const [cartProduct, setCartProduct] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -104,9 +109,7 @@ const AppState = ({ children }) => {
   }, []);
 
   const userProfile = async () => {
-    const token = localStorage.getItem("token");
-    // console.log(token);
-
+  
     const api = await axios.get(`${url}/user/profile`, {
       headers: {
         "Content-Type": "application/json",
@@ -118,6 +121,7 @@ const AppState = ({ children }) => {
 
     // console.log("user profile : ",api.data);
   };
+
 
   //add tocart
   const addToCart = async (title, price, qty, imgsrc, productid) => {
@@ -135,12 +139,57 @@ const AppState = ({ children }) => {
   
       if (response.data.cart) {
         console.log("Cart updated successfully:", response.data.cart);
+       
+          // Show a success toast
+          toast.success("Product added to cart!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+       
       } else {
         console.log("Unexpected response:", response.data);
       }
  
     }
+
+
+
+
+
+// getUser cart added product
+const getUserCart =async ()=>{
+try {
+    const api = await axios.get(`${url}/cart/userCart`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Auth": localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+      },
+    });
+    setCartProduct(api.data);
+    // console.log(api.data)
+} catch (error) {
+  console.log("data not found : ",error);
   
+}
+}
+
+
+
+useEffect(()=>{
+  getUserCart()
+},[])
+
+
+
+
+
+
 
   return (
     <AppContext.Provider
@@ -154,6 +203,7 @@ const AppState = ({ children }) => {
         setToken,
         user,
         addToCart,
+        cartProduct
       }}
     >
       {children}
