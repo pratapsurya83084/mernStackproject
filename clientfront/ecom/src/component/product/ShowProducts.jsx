@@ -5,10 +5,7 @@ import { ToastContainer } from "react-toastify";
 
 const ShowProducts = () => {
   const { products, addToCart } = useContext(AppContext);
-  // console.log(products);
-  // if (!localStorage.getItem("token")) {
-  //   navigate('/login')
-  // }
+ 
 
   return (
     <div className="container mt-4">

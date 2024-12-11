@@ -175,3 +175,25 @@ body {
   background-color: #D9304D;
 }
 
+/* cart added product ui css */
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.card-img-top {
+  border-radius: 5px;
+}

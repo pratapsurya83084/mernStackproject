@@ -4,8 +4,9 @@ import { useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import UserReviews from "./UserReviews";
+
 const SinglepageProd = () => {
-  const { products } = useContext(AppContext);
+  const { products, addToCart } = useContext(AppContext);
   const { id } = useParams();
   // console.log(products);
 
@@ -64,7 +65,26 @@ const SinglepageProd = () => {
 
           {/* Add to Cart and Buy Now Buttons */}
           <div className="flex justify-content-evenly">
-            <button className="btn btn-primary btn-lg">Add to Cart</button>
+            {localStorage.getItem("token") ? (
+              <button
+                className="btn btn-primary btn-lg"
+                onClick={() =>
+                  addToCart(
+                    products.title,
+                    products.price,
+                    1,
+                    products.imgsrc,
+                    products.productid
+                  )
+                }
+              >
+                Add to Cart
+              </button>
+            ) : (
+              <Link to="/login">
+                <button className="btn btn-primary btn-lg">Add to Cart</button>
+              </Link>
+            )}
             <button className="btn btn-success btn-lg m-3">Buy Now</button>
           </div>
         </div>
@@ -78,38 +98,48 @@ const SinglepageProd = () => {
         <p className="text-light">{product.detailedDescription}</p>
 
         <div className="container mt-4">
-  <div className="row justify-content-center">
-    {relatedprod.map((product) => (
-      <div key={product._id} className="col-6 col-md-4 col-lg-3 mb-4 custom-card">
-        <div className="card text-center bg-dark text-light shadow-sm">
-          <Link to={`/productDetailpage/${product._id}`}>
-            <div className="d-flex justify-content-center align-items-center">
-              <img
-                src={product.imgsrc}
-                className="card-img-top rounded border"
-                alt={product.title}
-                style={{
-                  height: "150px", // Adjusted height for smaller images
-                  objectFit: "cover",
-                }}
-              />
-            </div>
-          </Link>
-          <div className="card-body p-2 ">
-            <h5 className="card-title mb-2" style={{ fontSize: "0.9rem" }}>
-              {product.title}
-            </h5>
-            <p className="text-primary mb-2" style={{ fontSize: "0.8rem" }}>
-              ₹{product.price}
-            </p>
-            <button className="btn btn-sm btn-primary">Add to Cart</button>
+          <div className="row justify-content-center">
+            {relatedprod.map((product) => (
+              <div
+                key={product._id}
+                className="col-6 col-md-4 col-lg-3 mb-4 custom-card"
+              >
+                <div className="card text-center bg-dark text-light shadow-sm">
+                  <Link to={`/productDetailpage/${product._id}`}>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <img
+                        src={product.imgsrc}
+                        className="card-img-top rounded border"
+                        alt={product.title}
+                        style={{
+                          height: "150px", // Adjusted height for smaller images
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                  </Link>
+                  <div className="card-body p-2 ">
+                    <h5
+                      className="card-title mb-2"
+                      style={{ fontSize: "0.9rem" }}
+                    >
+                      {product.title}
+                    </h5>
+                    <p
+                      className="text-primary mb-2"
+                      style={{ fontSize: "0.8rem" }}
+                    >
+                      ₹{product.price}
+                    </p>
+                    <button className="btn btn-sm btn-primary">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    ))}
-  </div>
-</div>
-
       </div>
 
       {/* Product Reviews */}

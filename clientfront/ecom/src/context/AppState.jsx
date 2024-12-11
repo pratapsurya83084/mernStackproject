@@ -95,7 +95,7 @@ const AppState = ({ children }) => {
   };
 
   //after 3 day token expire automatically
-  const threeDaysInMilliseconds = 3 * 24 * 60 * 60 * 1000;
+  const threeDaysInMilliseconds = 24 * 60 * 60 * 1000;
   setTimeout(() => {
     localStorage.removeItem("token");
   }, threeDaysInMilliseconds);
@@ -171,7 +171,7 @@ try {
         "Auth": localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
       },
     });
-    setCartProduct(api.data);
+    setCartProduct(api.data.cart.items);
     // console.log(api.data)
 } catch (error) {
   console.log("data not found : ",error);
@@ -203,6 +203,7 @@ useEffect(()=>{
         setToken,
         user,
         addToCart,
+        getUserCart,
         cartProduct
       }}
     >
