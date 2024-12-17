@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 import axios from "axios";
 
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AppState = ({ children }) => {
-
   const url = "http://localhost:1000/api";
   const [isauthenticated, setisauthenticated] = useState(false);
   const [products, setProducts] = useState([]);
@@ -14,6 +13,7 @@ const AppState = ({ children }) => {
 
   const [user, setUser] = useState();
   const [cartProduct, setCartProduct] = useState([]);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -76,16 +76,13 @@ const AppState = ({ children }) => {
     setisauthenticated(true);
 
     // localstorage setToken
-    if(api.data.token){
+    if (api.data.token) {
       localStorage.setItem("token", JSON.stringify(api.data.token));
       localStorage.setItem("userProfile", JSON.stringify(api.data));
       console.log("success");
-      
-    }else{
+    } else {
       console.log("not logged failes ,please try again ....");
-      
     }
- 
 
     return api.data;
 
@@ -94,11 +91,11 @@ const AppState = ({ children }) => {
     // console.log(api.data.success);
   };
 
-  //after 3 day token expire automatically
-  const threeDaysInMilliseconds = 24 * 60 * 60 * 1000;
+  //after 1 day token expire automatically
+  const OneDaysInMilliseconds = 24 * 60 * 60 * 1000;
   setTimeout(() => {
     localStorage.removeItem("token");
-  }, threeDaysInMilliseconds);
+  }, OneDaysInMilliseconds);
 
   //user Profile
 
@@ -109,11 +106,10 @@ const AppState = ({ children }) => {
   }, []);
 
   const userProfile = async () => {
-  
     const api = await axios.get(`${url}/user/profile`, {
       headers: {
         "Content-Type": "application/json",
-        "Auth": localStorage.getItem("token").replace(/^"|"$/g, ""),
+        Auth: localStorage.getItem("token").replace(/^"|"$/g, ""),
       },
       withCredentials: true, // Allow cookies to be sent
     });
@@ -122,69 +118,142 @@ const AppState = ({ children }) => {
     // console.log("user profile : ",api.data);
   };
 
-
   //add tocart
   const addToCart = async (title, price, qty, imgsrc, productid) => {
+    const response = await axios.post(
+      `${url}/cart/add`, // Ensure `url` is correctly defined
+      { title, price, qty, imgsrc, productid },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+        },
+      }
+    );
+
+    if (response.data.cart) {
+      console.log("Cart updated successfully:", response.data.cart.items);
+      localStorage.setItem("cartLen", response.data.cart.items.length);
+     
    
-      const response = await axios.post(
-        `${url}/cart/add`, // Ensure `url` is correctly defined
-        { title, price, qty, imgsrc, productid },
+
+      // Show a success toast
+      toast.success("Product added to cart!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // setreload(reload);
+    } else {
+      console.log("Unexpected response:", response.data);
+    }
+  };
+
+  // getUser cart added product
+  const getUserCart = async () => {
+    try {
+      const api = await axios.get(`${url}/cart/userCart`, {
+        headers: {
+          "Content-Type": "application/json",
+          Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+        },
+      });
+      setCartProduct(api.data.cart.items);
+      // console.log(api.data)
+    } catch (error) {
+      console.log("data not found : ", error);
+    }
+  };
+
+  useEffect(() => {
+    getUserCart();
+  }, []);
+
+  //decrease qty
+  const decreaseQty = async (productid, qty) => {
+    try {
+      // Ensure qty is a valid number
+      if (qty <= 0 || isNaN(qty)) {
+        console.error("Invalid quantity");
+        return;
+      }
+
+      const api = await axios.post(
+        `${url}/cart/--qty`,
+        { productid, qty },
         {
           headers: {
             "Content-Type": "application/json",
-            "Auth": localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+            Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
           },
+          withCredentials: true,
         }
       );
-  
-      if (response.data.cart) {
-        console.log("Cart updated successfully:", response.data.cart);
-       
-          // Show a success toast
-          toast.success("Product added to cart!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-       
-      } else {
-        console.log("Unexpected response:", response.data);
-      }
- 
+
+      console.log("Updated cart: ", api.data);
+      // You might want to update state with the new cart data
+      // setCartProduct(api.data.cart.items);  // Example, adjust according to your logic
+    } catch (error) {
+      console.log("Error in decreasing quantity: ", error);
     }
+  };
+
+  const removeItemfromCart = async (productid) => {
+    try {
+      const response = await axios.delete(
+        `${url}/cart/removeCart/${productid}`, // API endpoint
+        // Empty body as no extra data is sent
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Token from localStorage
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log(response.data); // Log success response
+      // alert("Item removed successfully!");
+
+      // Show a success toast
+
+      // setreload(reload);
+    } catch (error) {
+      console.error("Error while removing item:", error);
+      alert("Failed to remove item from cart.");
+    }
+  };
 
 
+const clearCartAll=async()=>{
+  try {
+    const api = await axios.delete(`${url}/cart/clear`,{
+        headers: {
+          "Content-Type": "application/json",
+          Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+        },
+        withCredentials: true,
+      }
+    );
+
+console.log(api.data);
+  // Show a success toast
 
 
-
-// getUser cart added product
-const getUserCart =async ()=>{
-try {
-    const api = await axios.get(`${url}/cart/userCart`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Auth": localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
-      },
-    });
-    setCartProduct(api.data.cart.items);
-    // console.log(api.data)
-} catch (error) {
-  console.log("data not found : ",error);
-  
+  } catch (error) {
+    console.log("failed clear cart : ",error.message);
+    
+  }
 }
-}
-
-
 
 useEffect(()=>{
-  getUserCart()
-},[])
-
+  clearCartAll();
+},[]);
 
 
 
@@ -204,7 +273,11 @@ useEffect(()=>{
         user,
         addToCart,
         getUserCart,
-        cartProduct
+        cartProduct,
+       
+        decreaseQty,
+        removeItemfromCart,
+        clearCartAll
       }}
     >
       {children}

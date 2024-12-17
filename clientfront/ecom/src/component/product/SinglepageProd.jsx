@@ -4,6 +4,9 @@ import { useContext } from "react";
 import AppContext from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import UserReviews from "./UserReviews";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const SinglepageProd = () => {
   const { products, addToCart } = useContext(AppContext);
@@ -22,8 +25,18 @@ const SinglepageProd = () => {
     return <div>Product not found!</div>;
   }
 
+  //add to cart
+  // const addedCart  (title, price, 1, imgsrc, id){
+  //   addToCart(title, price, 1, imgsrc, _id);
+  // }
+  const addedCart = (title,price,qty, imgsrc,id) => {
+    addToCart(title,price,qty, imgsrc,id);
+      
+  };
+
   return (
     <div className="container mt-5">
+       <ToastContainer />
       {/* Product Detail Section */}
       <div className="row">
         {/* Product Image */}
@@ -69,12 +82,12 @@ const SinglepageProd = () => {
               <button
                 className="btn btn-primary btn-lg"
                 onClick={() =>
-                  addToCart(
-                    products.title,
-                    products.price,
+                  addedCart(
+                    product.title,
+                    product.price,
                     1,
-                    products.imgsrc,
-                    products.productid
+                    product.imgsrc,
+                    product._id
                   )
                 }
               >

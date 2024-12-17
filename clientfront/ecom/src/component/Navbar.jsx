@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -7,9 +7,15 @@ import AppContext from "../context/AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
-  const { token, setToken, setisauthenticated } = useContext(AppContext);
+  const { token, setisauthenticated ,cartProduct } = useContext(AppContext);
+    const [products, setProducts] = useState(cartProduct);
   //get toekn from localstorage
-// console.log(token);
+  let lenofcart = localStorage.getItem("cartLen");
+  console.log(lenofcart);
+// console.log(cartProduct.length);
+ useEffect(() => {
+    setProducts(cartProduct);
+  }, [cartProduct]);
 
   const navigate = useNavigate();
   const [isProfileDropdownVisible, setIsProfileDropdownVisible] =
@@ -109,8 +115,11 @@ const Navbar = () => {
           />
         </svg>
       </ul>
+   
+   {/* cart icon */}
       <Link to="/cart">
         <ul className="mx-2 text-dark">
+       {cartProduct.length}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -120,6 +129,7 @@ const Navbar = () => {
           >
             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
           </svg>
+          
         </ul>
       </Link>
       <Link to="/profile">
@@ -203,30 +213,26 @@ const Navbar = () => {
             {/* Dropdown Box */}
             {isProfileDropdownVisible && (
               <div className="absolute left-0 mt-2 p-2 bg-white rounded-5 border border-gray-300 rounded-lg shadow-lg">
-                <Link to={"/login"} onClick={handleLinkClick}>
+                {
+                  localStorage.getItem("token")?
+                  <Link to={"/login"} onClick={logout}>
                   <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">
-                    Login
+                    Logout
                   </p>
-                </Link>
+                </Link> :
+                  (<Link to={"/login"} onClick={handleLinkClick}>
+                    <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">
+                      Login
+                    </p>
+                  </Link>)
+                }
                 <Link to={"/register"} onClick={handleLinkClick}>
                   <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">
                     Register
                   </p>
                 </Link>
-                <Link to={"/logout"} onClick={handleLinkClick}>
-                  <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer">
-                    Logout
-                  </p>
-                </Link>
-                <Link
-                  to={"/savecart"}
-                  className="list-none no-underline"
-                  onClick={handleLinkClick}
-                >
-                  <p className="py-1 px-3 hover:bg-gray-200 cursor-pointer ">
-                    saveCart
-                  </p>
-                </Link>
+               
+               
               </div>
             )}
           </div>
@@ -237,7 +243,7 @@ const Navbar = () => {
               {" "}
               {/* Use space-x-2 for a small gap */}
               <FontAwesomeIcon className="text-dark" icon={faShoppingCart} />
-              <p className="mb-0 text-dark  ">Cart</p>{" "}
+       {cartProduct.length}
               {/* Remove default margin-bottom for better alignment */}
             </div>
           </Link>

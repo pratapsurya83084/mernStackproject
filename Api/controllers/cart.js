@@ -74,26 +74,48 @@ export const UserCart = async (req, res) => {
 //delete/remove  product from cart
 
 export const removeproductFromCart = async (req, res) => {
-  // const productId = req.params.productId; // product cart userId
-  const userId = req.user;
-  const cart = await Cart.findOne({ userId });
+  const { productId } = req.params; // Get productId from route params
+  const userId = req.user; // Authenticated user's ID
 
-  if (!cart) {
-    res.json({ message: "product is not exists in the cart.... " });
-  } else {
+  try {
+    // Find the user's cart
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found for the user." });
+    }
+
+    // Filter out the product that matches the productId
+    const initialLength = cart.items.length;
     cart.items = cart.items.filter(
-      (item) => item.productid && item.productid.toString() !== productId
+      (item) => item.productid.toString() !== productId
     );
-    await cart.save(); // Ensure the changes are saved to the database
-    res.json({ message: "product is successfully removed from cart ", cart });
-  }
 
-  return cart;
+    // Check if the product was actually removed
+    if (cart.items.length === initialLength) {
+      return res
+        .status(400)
+        .json({ message: "Product not found in the cart." });
+    }
+
+    // Save the updated cart
+    await cart.save();
+
+    // Send success response
+    res.json({
+      message: "Product successfully removed from cart.",
+      cart,
+    });
+  } catch (error) {
+    console.error("Error removing product from cart:", error.message);
+    res.status(500).json({ message: "Server error." });
+  }
 };
+
 
 //clear all cart items
 export const clearCart = async (req, res) => {
-  const productId = req.params.productId; // product cart userId
+  // const {productId} = req.params; // product cart userId
   const userId = req.user;
   let cart = await Cart.findOne({ userId });
 
@@ -110,15 +132,17 @@ export const clearCart = async (req, res) => {
 };
 
 //decrese qty from cart
-// no work
 export const decreaseProductqty = async (req, res) => {
   const { qty, productid } = req.body; // Quantity to decrease and product ID
-  // const userId=req.params.productid;
   const userId = req.user; // Replace with dynamic user ID as needed
+
+  // Check if qty is a positive integer
+  if (qty <= 0 || isNaN(qty)) {
+    return res.status(400).json({ message: "Invalid quantity" });
+  }
 
   // Find the user's cart
   let cart = await Cart.findOne({ userId });
-
   if (!cart) {
     // No cart found for the user
     return res.status(404).json({ message: "Cart not found for user" });
@@ -148,3 +172,4 @@ export const decreaseProductqty = async (req, res) => {
   // Return the updated cart
   res.json({ message: "Cart updated successfully", cart });
 };
+

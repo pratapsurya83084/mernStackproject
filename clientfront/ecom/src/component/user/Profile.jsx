@@ -38,7 +38,7 @@ const Profile = () => {
                 <p className="profile-subtext">login status : {user?.login || "N/A"}</p>
 
                 <div className="d-flex justify-content-center justify-content-md-start mt-3">
-                  <button className="btn btn-primary me-3">Edit Profile</button>
+          
                   <button className="btn btn-danger" onClick={handleLogout}>
                     Logout
                   </button>

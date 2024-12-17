@@ -1,7 +1,7 @@
 import {addToCart,UserCart,removeproductFromCart,clearCart,decreaseProductqty} from '../controllers/cart.js'
 import express from 'express'
 
-import { Authenticated,AuthCart ,AuthAddCart} from '../middlewares/Auth.js'
+import { Authenticated,AuthCart ,AuthAddCart,RemovefromCart,decsreaseQty} from '../middlewares/Auth.js'
 
 const router=express.Router()
 //add cart router
@@ -12,11 +12,11 @@ router.post("/add",AuthCart,addToCart) //Authenticated
 router.get("/userCart",AuthAddCart,UserCart)
 
 //remove from cart Router
-router.delete("/removeCart/:productId",Authenticated,removeproductFromCart)
+router.delete("/removeCart/:productId",RemovefromCart,removeproductFromCart)
 
 //remove all items from cart
-router.delete("/clear",Authenticated,clearCart)
+router.delete("/clear",RemovefromCart,clearCart)
 
 //decrese item qty
-router.post("/--qty",Authenticated,decreaseProductqty)
+router.post("/--qty",decsreaseQty,decreaseProductqty)
 export default router 
