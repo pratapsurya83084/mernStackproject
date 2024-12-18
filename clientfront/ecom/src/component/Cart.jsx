@@ -1,21 +1,36 @@
 import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import {useNavigate}  from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
 const Cart = () => {
   const navigate = useNavigate(); // UseNavigate hook to navigate to home page after clearing cart
-  const { cartProduct, removeItemfromCart, decreaseQty, increaseQty,clearCartAll } = useContext(AppContext);
+  const {
+    cartProduct,
+    removeItemfromCart,
+    decreaseQty,
+    increaseQty,
+    clearCartAll,
+  } = useContext(AppContext);
   const [products, setProducts] = useState(cartProduct);
   const [totalPrice, setTotalPrice] = useState(0);
+  
+
+
+
 
   useEffect(() => {
     setProducts(cartProduct);
+  
   }, [cartProduct]);
 
   useEffect(() => {
     const calculateTotalPrice = () => {
-      let total = products.reduce((acc, item) => acc + item.price * item.qty, 0);
+      let total = products.reduce(
+        (acc, item) => acc + item.price * item.qty,
+        0
+      );
       setTotalPrice(total);
     };
     calculateTotalPrice();
@@ -23,47 +38,66 @@ const Cart = () => {
 
   const handleRemoveItem = (productId) => {
     removeItemfromCart(productId); // Remove item from cart
-    toast.success('Successfully removed item from cart!'); // Show success message
+    toast.success("Successfully removed item from cart!"); // Show success message
+   setTimeout(()=>{
+    window.location.reload();
+   },1000)
   };
 
-  const handleIncreaseQty = (productId) => {
-    increaseQty(productId); // Increase quantity
+  const handleIncreaseQty = (productId, qty) => {
+    increaseQty(productId, qty); // Increase quantity
+    window.location.reload();
+   
   };
 
-  const handleDecreaseQty = (productId,qty) => {
-    decreaseQty(productId,qty); // Decrease quantity
+  const handleDecreaseQty = (productId, qty) => {
+    decreaseQty(productId, qty); // Decrease quantity
+    window.location.reload();
   };
 
-  const clearAllCart=()=>{
+  const clearAllCart = () => {
     clearCartAll();
-  setTimeout(()=>{
-    navigate('/');
-  },2000);
+    
+    setTimeout(() => {
+      navigate("/");
+      window.location.reload();
+    }, 2000);
     toast.success("Clear cart successFully!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-  }
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+   
+  };
+
+
 
   return (
     <div>
       <ToastContainer />
       {products.length ? (
         <div className="container my-5">
-         
-<div style={{justifyContent:"space-between",display:"flex"}}>
-<h2 className="mb-4 text-dark">Shopping Cart</h2>
-<button 
-onClick={clearAllCart}
-className=""style={{backgroundColor:"red",color:"white", borderRadius:"10px", height:"40px"}}>Clear Cart</button>
-  
-  </div>          <div className="table-responsive">
+          <div style={{ justifyContent: "space-between", display: "flex" }}>
+            <h2 className="mb-4 text-dark">Shopping Cart</h2>
+            <button
+              onClick={clearAllCart}
+              className=""
+              style={{
+                backgroundColor: "red",
+                color: "white",
+                borderRadius: "10px",
+                height: "40px",
+              }}
+            >
+              Clear Cart
+            </button>
+          </div>{" "}
+          <div className="table-responsive">
             <table className="table table-bordered">
               <thead className="bg-warning text-white">
                 <tr>
@@ -88,9 +122,21 @@ className=""style={{backgroundColor:"red",color:"white", borderRadius:"10px", he
                     <td>{item.title}</td>
                     <td>₹{item.price}</td>
                     <td className="d-flex justify-content-between align-items-center">
-                      <button onClick={() => handleIncreaseQty(item.productid)}>+</button>
+                      <button
+                        onClick={() =>
+                          handleIncreaseQty(item.productid, item.qty)
+                        }
+                      >
+                        +
+                      </button>
                       <p>{item.qty}</p>
-                      <button onClick={() => handleDecreaseQty(item.productid,item.qty)}>-</button>
+                      <button
+                        onClick={() =>
+                          handleDecreaseQty(item.productid, item.qty)
+                        }
+                      >
+                        -
+                      </button>
                     </td>
                     <td>
                       <svg
@@ -112,7 +158,6 @@ className=""style={{backgroundColor:"red",color:"white", borderRadius:"10px", he
               </tbody>
             </table>
           </div>
-
           <div className="row mt-4">
             <div className="col-md-6">
               <h5 className="mb-3 text-dark">Cart Total</h5>
@@ -137,11 +182,11 @@ className=""style={{backgroundColor:"red",color:"white", borderRadius:"10px", he
             alignItems: "center",
             textAlign: "center",
             marginTop: "100px",
-            color: "black"
+            color: "black",
           }}
         >
           <div style={{ marginBottom: "20px", fontSize: "20px" }}>
-            No products in cart
+            Not  products found in cart
           </div>
           <img
             src="\gifImg.gif"

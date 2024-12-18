@@ -148,7 +148,10 @@ const AppState = ({ children }) => {
         progress: undefined,
         theme: "colored",
       });
-      // setreload(reload);
+      setTimeout(()=>{
+        window.location.reload();
+      },1000)
+     
     } else {
       console.log("Unexpected response:", response.data);
     }
@@ -222,7 +225,7 @@ const AppState = ({ children }) => {
 
       // Show a success toast
 
-      // setreload(reload);
+    
     } catch (error) {
       console.error("Error while removing item:", error);
       alert("Failed to remove item from cart.");
@@ -251,10 +254,36 @@ console.log(api.data);
   }
 }
 
-useEffect(()=>{
-  clearCartAll();
-},[]);
 
+
+  //increase qty
+  const increaseQty = async (productid, qty) => {
+    try {
+      // Ensure qty is a valid number
+      if (qty <= 0 || isNaN(qty)) {
+        console.error("Invalid quantity");
+        return;
+      }
+
+      const api = await axios.post(
+        `${url}/cart/--incqty`,
+        { productid, qty },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log("Updated cart: ", api.data);
+      // You might want to update state with the new cart data
+      // setCartProduct(api.data.cart.items);  // Example, adjust according to your logic
+    } catch (error) {
+      console.log("Error in decreasing quantity: ", error);
+    }
+  };
 
 
 
@@ -274,10 +303,10 @@ useEffect(()=>{
         addToCart,
         getUserCart,
         cartProduct,
-       
+        increaseQty,
         decreaseQty,
         removeItemfromCart,
-        clearCartAll
+        clearCartAll,
       }}
     >
       {children}

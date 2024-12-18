@@ -2,7 +2,7 @@
 
 
 import { Cart } from "../models/cart.js";
-
+//middlwaeredd
 export const addToCart = async (req, res) => {
   try {
     const { productid, title, price, qty, imgsrc } = req.body;
@@ -57,7 +57,7 @@ export const addToCart = async (req, res) => {
   }
 };
 
-//get user cart
+//get user cart middlwaeredd
 
 export const UserCart = async (req, res) => {
   const userId = req.user; //product cart userId
@@ -71,7 +71,7 @@ export const UserCart = async (req, res) => {
   return cart;
 };
 
-//delete/remove  product from cart
+//delete/remove  product from cart middlwaeredd
 
 export const removeproductFromCart = async (req, res) => {
   const { productId } = req.params; // Get productId from route params
@@ -128,10 +128,10 @@ export const clearCart = async (req, res) => {
     cart.items = [];
     res.json({ message: "all items is successfully removed from cart " });
   }
-  await cart.save();
+   cart.save();
 };
 
-//decrese qty from cart
+//decrese qty from cart middlwaeredd
 export const decreaseProductqty = async (req, res) => {
   const { qty, productid } = req.body; // Quantity to decrease and product ID
   const userId = req.user; // Replace with dynamic user ID as needed
@@ -158,7 +158,7 @@ export const decreaseProductqty = async (req, res) => {
     return res.status(404).json({ message: "Product not found in cart" });
   } else {
     // Decrease the quantity of the item
-    cart.items[itemIndex].qty -= qty;
+    cart.items[itemIndex].qty = qty-1;
 
     // If the quantity is 0 or less, remove the item from the cart
     if (cart.items[itemIndex].qty <= 0) {
@@ -170,6 +170,50 @@ export const decreaseProductqty = async (req, res) => {
   await cart.save();
 
   // Return the updated cart
-  res.json({ message: "Cart updated successfully", cart });
+  res.json({ message: "Cart item qty Decreased Updated successfully", cart });
 };
+
+
+// incsreaseQty auth middlwareeed
+export const IncreaseProductqty = async (req, res) => {
+  const { qty, productid } = req.body; // Quantity to decrease and product ID
+  const userId = req.user; // Replace with dynamic user ID as needed
+
+  // Check if qty is a positive integer
+  if (qty <= 0 || isNaN(qty)) {
+    return res.status(400).json({ message: "Invalid quantity" });
+  }
+
+  // Find the user's cart
+  let cart = await Cart.findOne({ userId });
+  if (!cart) {
+    // No cart found for the user
+    return res.status(404).json({ message: "Cart not found for user" });
+  }
+
+  // Find the index of the item to decrease qty
+  const itemIndex = cart.items.findIndex(
+    (item) => item.productid && item.productid.toString() === productid
+  );
+
+  if (itemIndex === -1) {
+    // Item not found in the cart
+    return res.status(404).json({ message: "Product not found in cart" });
+  } else {
+    // Decrease the quantity of the item
+    cart.items[itemIndex].qty = qty+1;
+
+    // If the quantity is 0 or less, remove the item from the cart
+    if (cart.items[itemIndex].qty <= 0) {
+      cart.items.splice(itemIndex, 1);
+    }
+  }
+
+  // Save the updated cart to the database
+  await cart.save();
+
+  // Return the updated cart
+  res.json({ message: "Cart item qty Increased Updated successfully", cart });
+};
+
 

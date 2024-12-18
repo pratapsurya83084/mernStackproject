@@ -185,3 +185,42 @@ export const decsreaseQty = async(req,res,next)=>{
    
   }
 }
+
+
+
+// incsreaseQty auth
+export const incsreaseQty = async(req,res,next)=>{
+  const token = req.header("Auth");
+
+  console.log("Token received  : ", token);
+
+  if (!token) {
+    return res.json({ message: "please login first" });
+  }
+
+  try {
+   //verify token
+   const decode = jwt.verify(token,'#$#$#(*$'); //(token,secretKey)
+   console.log("decoded token is....: ",decode);
+   
+   const UserId = decode.userId;
+ 
+   let user = await User.findById(UserId);
+   // console.log(user);
+   if (!user) {
+     return response.json({ message: "user not found" });
+   } else {
+
+     req.user = user
+     next();
+    //  res.json({ message: true, login: "successfull add product",});
+  
+    
+ 
+}
+  } catch (error) {
+   console.error("Token verification failed:", error);
+   return res.status(401).json({ message: "Invalid or expired token" });
+   
+  }
+}
