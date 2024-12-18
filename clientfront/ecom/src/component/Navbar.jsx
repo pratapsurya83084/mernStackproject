@@ -117,7 +117,9 @@ const Navbar = () => {
       </ul>
    
    {/* cart icon */}
-      <Link to="/cart">
+    {
+      products.length>0 ?
+      (  <Link to="/cart">
         <ul className="mx-2 text-dark">
        {cartProduct.length}
           <svg
@@ -131,7 +133,14 @@ const Navbar = () => {
           </svg>
           
         </ul>
-      </Link>
+      </Link>)
+      :
+      (
+        " "
+      )
+    }
+
+
       <Link to="/profile">
         <ul className="text-dark mx-2">
           <svg

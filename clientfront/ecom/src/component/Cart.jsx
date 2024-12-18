@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const navigate = useNavigate(); // UseNavigate hook to navigate to home page after clearing cart
   const {
     cartProduct,
     removeItemfromCart,
@@ -13,16 +11,13 @@ const Cart = () => {
     increaseQty,
     clearCartAll,
   } = useContext(AppContext);
+
   const [products, setProducts] = useState(cartProduct);
   const [totalPrice, setTotalPrice] = useState(0);
-  
-
-
-
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
 
   useEffect(() => {
     setProducts(cartProduct);
-  
   }, [cartProduct]);
 
   useEffect(() => {
@@ -37,45 +32,38 @@ const Cart = () => {
   }, [products]);
 
   const handleRemoveItem = (productId) => {
-    removeItemfromCart(productId); // Remove item from cart
-    toast.success("Successfully removed item from cart!"); // Show success message
-   setTimeout(()=>{
-    window.location.reload();
-   },1000)
+    removeItemfromCart(productId);
+    toast.success("Successfully removed item from cart!");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const handleIncreaseQty = (productId, qty) => {
-    increaseQty(productId, qty); // Increase quantity
+    increaseQty(productId, qty);
     window.location.reload();
-   
   };
 
   const handleDecreaseQty = (productId, qty) => {
-    decreaseQty(productId, qty); // Decrease quantity
+    decreaseQty(productId, qty);
     window.location.reload();
   };
 
   const clearAllCart = () => {
     clearCartAll();
-    
     setTimeout(() => {
-      navigate("/");
       window.location.reload();
     }, 2000);
-    toast.success("Clear cart successFully!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-   
+    toast.success("Clear cart successFully!");
   };
 
+  const handleProceedToCheckout = () => {
+    setShowModal(true);
+  };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div>
@@ -96,7 +84,7 @@ const Cart = () => {
             >
               Clear Cart
             </button>
-          </div>{" "}
+          </div>
           <div className="table-responsive">
             <table className="table table-bordered">
               <thead className="bg-warning text-white">
@@ -167,7 +155,10 @@ const Cart = () => {
                   <strong>₹{totalPrice}</strong>
                 </li>
               </ul>
-              <button className="btn btn-success w-100 mt-3">
+              <button
+                className="btn btn-success w-100 mt-3"
+                onClick={handleProceedToCheckout}
+              >
                 Proceed to Checkout
               </button>
             </div>
@@ -186,7 +177,7 @@ const Cart = () => {
           }}
         >
           <div style={{ marginBottom: "20px", fontSize: "20px" }}>
-            Not  products found in cart
+            Not products found in cart
           </div>
           <img
             src="\gifImg.gif"
@@ -195,6 +186,136 @@ const Cart = () => {
           />
         </div>
       )}
+
+      {/* Modal */}
+   {/* Modal */}
+{/* Modal */}
+{showModal && (
+  <div
+    className="modal fade show d-block"
+    style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+    tabIndex="-1"
+  >
+    <div className="modal-dialog">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Proceed to Checkout</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={closeModal}
+          ></button>
+        </div>
+        <div className="modal-body">
+          <form>
+            <div className="mb-3">
+              <label htmlFor="fullName" className="form-label">
+                Full Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="fullName"
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="country" className="form-label">
+                Country
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="country"
+                placeholder="Enter your country"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="state" className="form-label">
+                State
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="state"
+                placeholder="Enter your state"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="city" className="form-label">
+                City
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="city"
+                placeholder="Enter your city"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="pincode" className="form-label">
+                Pincode
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="pincode"
+                placeholder="Enter your pincode"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="phoneNumber" className="form-label">
+                Phone Number
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="phoneNumber"
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="address" className="form-label">
+                Address
+              </label>
+              <textarea
+                className="form-control"
+                id="address"
+                rows="2"
+                placeholder="Enter your address"
+              ></textarea>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="nearby" className="form-label">
+                Nearby
+              </label>
+              <textarea
+                className="form-control"
+                id="nearby"
+                rows="2"
+                placeholder="Enter nearby landmarks"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={closeModal}
+          >
+            Close
+          </button>
+          <button type="button" className="btn btn-primary">
+            Confirm Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 };
