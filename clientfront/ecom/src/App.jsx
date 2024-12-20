@@ -10,6 +10,7 @@ import SearchProduct from "./component/product/SearchProduct";
 import Profile from "./component//user/Profile";
 import ProtectedRoute from "./component/protectRoutes/ProtectedRouted";
 import Cart from './component/Cart';
+import  Checkout  from './component/Checkout';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
 
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );

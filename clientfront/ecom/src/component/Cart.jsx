@@ -2,19 +2,25 @@ import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
-  const {
-    cartProduct,
-    removeItemfromCart,
-    decreaseQty,
-    increaseQty,
-    clearCartAll,
+  const {cartProduct,removeItemfromCart,decreaseQty,increaseQty,clearCartAll,addressinfo,UserAddress,
   } = useContext(AppContext);
-
+  const navigate = useNavigate();
   const [products, setProducts] = useState(cartProduct);
   const [totalPrice, setTotalPrice] = useState(0);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
+
+  // take a address information
+  const [address, setAddress] = useState({
+    fullname: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pincode: "",
+    phoneNumber: "",
+  });
 
   useEffect(() => {
     setProducts(cartProduct);
@@ -63,6 +69,42 @@ const Cart = () => {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const AddressInfo = (e) => {
+    e.preventDefault();
+    // console.log("user address details : ",address);
+  };
+
+  const addAddressInfo = (
+    fullname,
+    address,
+    city,
+    state,
+    country,
+    pincode,
+    phoneNumber
+  ) => {
+    const result = addressinfo(
+      fullname,
+      address,
+      city,
+      state,
+      country,
+      pincode,
+      phoneNumber
+    );
+    console.log(result.data);
+
+    setTimeout(() => {
+      // window.location.href="/checkout";
+      console.log("checkout");
+    }, 1000);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAddress({ ...address, [name]: value });
   };
 
   return (
@@ -188,134 +230,169 @@ const Cart = () => {
       )}
 
       {/* Modal */}
-   {/* Modal */}
-{/* Modal */}
-{showModal && (
-  <div
-    className="modal fade show d-block"
-    style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-    tabIndex="-1"
-  >
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title">Proceed to Checkout</h5>
-          <button
-            type="button"
-            className="btn-close"
-            onClick={closeModal}
-          ></button>
+      {showModal && (
+        <div
+          className="modal fade show d-block text-dark"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+          tabIndex="-1"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Proceed to Checkout</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={closeModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={AddressInfo}>
+                  <div className="mb-3">
+                    <label htmlFor="fullName" className="form-label">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="fullName"
+                      placeholder="Enter your full name"
+                      name="fullname"
+                      value={address.fullname}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="country" className="form-label">
+                      Country
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="country"
+                      placeholder="Enter your country"
+                      name="country"
+                      value={address.country}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="state" className="form-label">
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="state"
+                      placeholder="Enter your state"
+                      name="state"
+                      value={address.state}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="city" className="form-label">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="city"
+                      placeholder="Enter your city"
+                      name="city"
+                      value={address.city}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="pincode" className="form-label">
+                      Pincode
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="pincode"
+                      placeholder="Enter your pincode"
+                      name="pincode"
+                      value={address.pincode}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="phoneNumber" className="form-label">
+                      Phone Number
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="phoneNumber"
+                      placeholder="Enter your phone number"
+                      name="phoneNumber"
+                      value={address.phoneNumber}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="address" className="form-label">
+                      Address
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="address"
+                      rows="2"
+                      placeholder="Enter your address"
+                      name="address"
+                      value={address.address}
+                      onChange={handleInputChange}
+                      required
+                    ></textarea>
+                  </div>
+                  
+                  <div className="modal-footer " style={{justifyContent:'center',fontWeight:'bold'}}>
+                  {UserAddress && (
+                  <div className=" ">
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => navigate("/checkout")}
+                      style={{height:"40px", width:"", fontSize:"15px"}}
+                    >
+                    
+                      old address
+                    </button>
+                  </div>
+                )}
+                    <button
+                      onClick={() =>
+                        addAddressInfo(
+                          address.fullname,
+                          address.address,
+                          address.city,
+                          address.state,
+                          address.country,
+                          address.pincode,
+                          address.phoneNumber
+                        )
+                      }
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{height:"40px", width:"", fontSize:"15px"}}
+                    >
+                      Confirm Order
+                    </button>
+                  </div>
+                </form>
+               
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="modal-body">
-          <form>
-            <div className="mb-3">
-              <label htmlFor="fullName" className="form-label">
-                Full Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="fullName"
-                placeholder="Enter your full name"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="country" className="form-label">
-                Country
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="country"
-                placeholder="Enter your country"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="state" className="form-label">
-                State
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="state"
-                placeholder="Enter your state"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="city" className="form-label">
-                City
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="city"
-                placeholder="Enter your city"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="pincode" className="form-label">
-                Pincode
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="pincode"
-                placeholder="Enter your pincode"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="phoneNumber" className="form-label">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="phoneNumber"
-                placeholder="Enter your phone number"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="address" className="form-label">
-                Address
-              </label>
-              <textarea
-                className="form-control"
-                id="address"
-                rows="2"
-                placeholder="Enter your address"
-              ></textarea>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="nearby" className="form-label">
-                Nearby
-              </label>
-              <textarea
-                className="form-control"
-                id="nearby"
-                rows="2"
-                placeholder="Enter nearby landmarks"
-              ></textarea>
-            </div>
-          </form>
-        </div>
-        <div className="modal-footer">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={closeModal}
-          >
-            Close
-          </button>
-          <button type="button" className="btn btn-primary">
-            Confirm Order
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
-
-
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 import axios from "axios";
 
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AppState = ({ children }) => {
@@ -13,6 +13,9 @@ const AppState = ({ children }) => {
 
   const [user, setUser] = useState();
   const [cartProduct, setCartProduct] = useState([]);
+
+  const [UserAddress,setUserAddress]=useState([]);
+
 
 
   useEffect(() => {
@@ -134,24 +137,12 @@ const AppState = ({ children }) => {
     if (response.data.cart) {
       console.log("Cart updated successfully:", response.data.cart.items);
       localStorage.setItem("cartLen", response.data.cart.items.length);
-     
-   
 
       // Show a success toast
-      toast.success("Product added to cart!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      setTimeout(()=>{
+      toast.success("Product added to cart!");
+      setTimeout(() => {
         window.location.reload();
-      },1000)
-     
+      }, 1000);
     } else {
       console.log("Unexpected response:", response.data);
     }
@@ -224,37 +215,28 @@ const AppState = ({ children }) => {
       // alert("Item removed successfully!");
 
       // Show a success toast
-
-    
     } catch (error) {
       console.error("Error while removing item:", error);
       alert("Failed to remove item from cart.");
     }
   };
 
-
-const clearCartAll=async()=>{
-  try {
-    const api = await axios.delete(`${url}/cart/clear`,{
+  const clearCartAll = async () => {
+    try {
+      const api = await axios.delete(`${url}/cart/clear`, {
         headers: {
           "Content-Type": "application/json",
           Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
         },
         withCredentials: true,
-      }
-    );
+      });
 
-console.log(api.data);
-  // Show a success toast
-
-
-  } catch (error) {
-    console.log("failed clear cart : ",error.message);
-    
-  }
-}
-
-
+      console.log(api.data);
+      // Show a success toast
+    } catch (error) {
+      console.log("failed clear cart : ", error.message);
+    }
+  };
 
   //increase qty
   const increaseQty = async (productid, qty) => {
@@ -285,6 +267,60 @@ console.log(api.data);
     }
   };
 
+  //addaddress shipping
+  const addressinfo = async ( fullname,address,city,state,country,pincode,phoneNumber) => {
+   if (fullname&&address&&city&&state&&country&&pincode&&phoneNumber) {
+    const api = await axios.post(
+      `${url}/address/addaddress`,
+      { fullname,address,city,state,country,pincode,phoneNumber },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+        },
+        withCredentials: true,
+      }
+    );
+
+    console.log("User address Detail : ", api.data.success);
+    if (api.data.success) {
+     toast.success("Address updated successfully")
+    }
+   
+
+   }else{
+    toast.error("All fields are required");
+   }
+  };
+
+
+//getUser latest address
+const getUserAddress = async () => {
+
+    const api = await axios.get(
+      `${url}/address/getUserAddress`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Auth: localStorage.getItem("token")?.replace(/^"|"$/g, ""), // Send the token correctly
+        },
+        withCredentials: true,
+      }
+
+    );
+
+    console.log("user address : ", api.data.address);
+   
+setUserAddress(api.data.address);
+};
+
+useEffect(()=>{
+  getUserAddress();
+},[]);
+
+
+
+
 
 
 
@@ -307,6 +343,8 @@ console.log(api.data);
         decreaseQty,
         removeItemfromCart,
         clearCartAll,
+        addressinfo,
+        UserAddress,
       }}
     >
       {children}

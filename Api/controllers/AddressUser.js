@@ -20,7 +20,7 @@ export const AddressUser = async (req, res) => {
   return res.json({
     message: "Address added successfully",
     UserData: data,
-    sucess: true,
+    success: true,
   });
 };
 
@@ -29,10 +29,10 @@ export const getUserAddress = async (req, res) => {
   const getUserAddr = await Address.find({userId:req.user}).sort({createdAt:-1});
   console.log(getUserAddr);
   if (!getUserAddr){
-    return res.json({ message: "No address found", sucess: false });
+    return res.json({ message : "No address found", sucess: false });
 
   }
   else{
-    return res.json({ message:"message" ,address: getUserAddr[0]})
+    return res.json({ message:"message" ,  address: getUserAddr[0]})
   }
 };
