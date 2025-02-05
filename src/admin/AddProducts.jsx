@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 const AddProducts = () => {
-  const url="https://mernstackproject-14.onrender.com/api"
+  const url="https://mernstack1stproject-1.onrender.com/api"
   
   const [formData, setFormData] = useState({
     title: "",
