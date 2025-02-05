@@ -1,0 +1,315 @@
+body{
+  background-color:rgb(188, 168, 218);
+  color: rgb(204, 200, 200);
+user-select: none;
+}
+
+
+.btn-purple {
+  background-color: #6f42c1; /* Purple color */
+  color: white;
+}
+
+.btn-purple:hover {
+  background-color: #6128ca; /* Purple color */
+  color: white;
+}
+
+
+
+/* Navbar.css */
+.right-navbar {
+  position: fixed;
+  top: 0;
+  right: -100%; /* Hidden offscreen initially */
+  height: 100%;
+  width: 300px;
+ 
+  background-color: #57728d; 
+  /* Light background */
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  padding: 1rem;
+  z-index: 1050;
+}
+
+.right-navbar.open {
+  right: 0; /* Slide in when open */
+}
+
+.btn-close {
+  /* position: absolute; */
+  top: 10px;
+  right: 10px;
+  /* background: none; */
+  border: none;
+  font-size: 1.5rem;
+  float: right;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+
+.list-unstyled {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar.css */
+.custom-toggler {
+  background-color: black; /* Set background color to black */
+  border: none; /* Remove the default border */
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-color: white;
+   /* Set the icon (bars) to white for contrast */
+}
+
+/* searchbar */
+.searchbar{
+  justify-content: center;
+  align-items: center;
+}
+.searchbar{
+  border: none;
+  background-color: rgb(169, 166, 166);
+  border-radius:50px ;
+ height: 40%;
+ width: 40%;
+  -webkit-border-radius:50px ;
+  -moz-border-radius:50px ;
+  -ms-border-radius:50px ;
+  -o-border-radius:50px ;
+}
+
+.searchbar input{
+  border: none;
+  border-radius: 30px;
+ background-color: rgb(169, 166, 166);
+}
+.searchbar input:focus{
+ outline: none;
+
+
+}
+@media (min-width: 320px) {
+  .custom-cards {
+    max-width: 230px; /* Adjust the card width as desired */
+ 
+  }
+}
+@media (min-width: 375px) {
+  .custom-cards {
+    max-width: 230px; /* Adjust the card width as desired */
+  }
+}
+@media (min-width: 492px) {
+  .custom-cards {
+    max-width: 210px; /* Adjust the card width as desired */
+  }
+}
+
+/* custom cards size */
+@media (min-width: 492px) {
+  .custom-card {
+    max-width: 130px; /* Adjust the card width as desired */
+  }
+}
+@media (min-width: 692px) {
+  .custom-card {
+    max-width: 130px; /* Adjust the card width as desired */
+  }
+}
+@media (min-width: 992px) {
+  .custom-card {
+    max-width: 140px; /* Adjust the card width as desired */
+  }
+}
+
+/* user profile css */
+:root {
+  --primary-color: #4F46E5; /* Indigo */
+  --secondary-color: #F43F5E; /* Rose */
+  --background-color: #F9FAFB; /* Light Gray */
+  --card-bg-color: #FFFFFF; /* White */
+  --text-color: #1F2937; /* Dark Gray */
+  --subtext-color: #6B7280; /* Medium Gray */
+  --border-color: #E5E7EB; /* Light Gray */
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+.profile-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.profile-subtext {
+  color: var(--subtext-color);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #4338CA;
+}
+
+.btn-danger {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-danger:hover {
+  background-color: #D9304D;
+}
+
+/* cart added product ui css */
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.card-img-top {
+  border-radius: 5px;
+}
+
+/* Custom CSS for small screens (phones) */
+
+
+
+
+.carousel-image {
+  width: 100%;      
+  height: auto;      
+}
+
+/* @media (max-width: 767px) {
+  .carousel-image {
+    height: 100px;   
+    width: 100%;     
+  }
+} */
+
+@media (max-width: 275px) {
+  .carousel-image {
+    height: 100px;   
+    width: 100%;     
+   
+  }
+}
+
+
+@media (max-width: 475px) {
+  .carousel-image {
+    height: 100px;   
+   
+    width: 100%;     
+   
+  
+  }
+}
+
+
+/* carousel.css *
+
+/* Ensure the carousel container takes full width */
+/* .carousel {
+  width: 100%;
+} */
+
+/* category */
+/* Ensure categories are horizontally scrollable */
+.category-scroll {
+  display: flex;
+  overflow-x: auto; /* Allow horizontal scroll */
+  scroll-snap-type: x mandatory; /* Enable snapping to items */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.category-item {
+  flex: 0 0 auto; /* Prevent items from shrinking and allow them to fit within the container */
+  margin-right: 20px; /* Space between items */
+  scroll-snap-align: start; /* Align items at the start when snapped */
+}
+
+/* Optional: To hide scrollbar in some browsers */
+.category-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure the container adjusts to the screen size */
+@media (max-width: 768px) {
+  .category-scroll {
+    padding-bottom: 10px; /* Space for the scrollbar */
+  }
+}
+
+
+/* gap-category */
+.gap-category {
+ gap: 20px; /* Space between categories */
+}
+
+
+
+@media (min-width:1024px) and (max-width: 2550px) {
+  /* Styles for devices with width between 576px and 768px */
+ .gap-category{
+  gap:80px;
+ }
+}
+
+
+.carousel-indicators [data-bs-target] {
+  background-color: black; /* Makes the indicators black */
+  width: 10px; /* Adjust size as needed */
+  height: 10px;
+  border-radius: 50%; /* Ensures they are round */
+}
+
+.carousel-indicators .active {
+  background-color: black; /* Keeps the active indicator black */
+  opacity: 1; /* Makes it fully opaque */
+}
+
+
+/* top offers */
+.custom-scroll {
+
+  display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Disable vertical scrolling */
+  -ms-overflow-style: none; /* Hide scrollbar in IE */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.custom-scroll::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in Chrome, Safari, Edge */
+}
+
+
