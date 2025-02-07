@@ -23,9 +23,21 @@ import Furniture from "./component/category/Furniture";
 import ToyAndBeauty from "./component/category/ToyAndBeauty";
 import Dashboard from './admin/Dashboard'
 import AdminLogin from "./component/protectRoutes/AdminLogin";
+import Error404 from "./component/Error404";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 function App() {
+
+  const GoogleAuthWrapper=()=>{
+    return(
+      <GoogleOAuthProvider clientId="1088716956562-e5lspq26mt4a0vaodpq0v91ec8flo86i.apps.googleusercontent.com">
+      <Login />
+    </GoogleOAuthProvider> 
+    )
+  }
+
+
   return (
-    
  <Router>
       <Navbar />
       <Routes>
@@ -33,7 +45,7 @@ function App() {
 
         <Route path="/productDetailpage/:id" element={<SinglepageProd />} />
         <Route path="/product/search/:Term" element={<SearchProduct />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<GoogleAuthWrapper />} />
         {/* protected 2 routes */}
         <Route
           path="/cart"
@@ -60,7 +72,7 @@ function App() {
         <Route path="/beauty&toy" element={<ToyAndBeauty />} />
         
         <Route path="/admin" element={<AdminLogin> <Dashboard />  </AdminLogin>} />
-       
+        <Route path="*" element={<Error404 />} />
       </Routes>
       <Footer/>
     </Router>

@@ -5,7 +5,8 @@ import { toast ,ToastContainer} from "react-toastify";
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
   // console.log(product);
-const url="https://mernstack1stproject-1.onrender.com/api"
+const url="http://localhost:1000/api"
+// "https://mernstack1stproject-1.onrender.com/api"
   const getAllProductList = async () => {
     try {
       const api = await axios.get(

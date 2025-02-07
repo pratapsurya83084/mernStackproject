@@ -4,7 +4,8 @@ import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
 const OrderUser = () => {
   const [allorder, setAllorder] = useState([]);
-const url="https://mernstack1stproject-1.onrender.com/api"
+const url="http://localhost:1000/api"
+// "https://mernstack1stproject-1.onrender.com/api"
   
   const getAllOrder = async () => {
     try {

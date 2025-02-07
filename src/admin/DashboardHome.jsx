@@ -23,7 +23,8 @@ ChartJS.register(
 );
 
 const DashboardHome = () => {
-  const url="https://mernstack1stproject-1.onrender.com/api"
+  const url="http://localhost:1000/api"
+  // "https://mernstack1stproject-1.onrender.com/api"
   const [allUsers, setAllUsers] = useState([]);
   const [allsales, setAllsales] = useState([]);
   const [chartData, setChartData] = useState({
