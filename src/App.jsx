@@ -28,13 +28,13 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
 
-  const GoogleAuthWrapper=()=>{
-    return(
-      <GoogleOAuthProvider clientId="1088716956562-e5lspq26mt4a0vaodpq0v91ec8flo86i.apps.googleusercontent.com">
-      <Login />
-    </GoogleOAuthProvider> 
-    )
-  }
+  // const GoogleAuthWrapper=()=>{
+  //   return(
+  //     <GoogleOAuthProvider clientId="1088716956562-e5lspq26mt4a0vaodpq0v91ec8flo86i.apps.googleusercontent.com">
+  //     <Login />
+  //   </GoogleOAuthProvider> 
+  //   )
+  // }
 
 
   return (
@@ -45,7 +45,7 @@ function App() {
 
         <Route path="/productDetailpage/:id" element={<SinglepageProd />} />
         <Route path="/product/search/:Term" element={<SearchProduct />} />
-        <Route path="/login" element={<GoogleAuthWrapper />} />
+        <Route path="/login" element={<Login />} />
         {/* protected 2 routes */}
         <Route
           path="/cart"

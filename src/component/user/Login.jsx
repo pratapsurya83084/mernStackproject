@@ -5,35 +5,35 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 // import googlelogin hook
-import { useGoogleLogin } from "@react-oauth/google";
-import {googleAuth} from './GoogleApi';
+// import { useGoogleLogin } from "@react-oauth/google";
+// import {googleAuth} from './GoogleApi';
 const Login = () => {
   //take 23 things callback function ,dummy function ,authcode
 
-  const responseGoogle = async (authResult) => {
-    try {
-      if (authResult.code) {
-        const result = await googleAuth(authResult.code);
-        const {email,name,image}= result.data.user;
-        console.log("Google Auth Response:", result.data.user);
+  // const responseGoogle = async (authResult) => {
+  //   try {
+  //     if (authResult.code) {
+  //       const result = await googleAuth(authResult.code);
+  //       const {email,name,image}= result.data.user;
+  //       console.log("Google Auth Response:", result.data.user);
       
        
-      }
+  //     }
    
-    } catch (error) {
-      console.log("Error while requesting Google code:", error);
-    }
-  };
+  //   } catch (error) {
+  //     console.log("Error while requesting Google code:", error);
+  //   }
+  // };
  
 
 
   
  //onlick google login button with google
- const googleLogin = useGoogleLogin({
-  onSuccess: responseGoogle,
-  onError: (error) => console.log("Google login error:", error),
-  flow: "auth-code",
-});
+//  const googleLogin = useGoogleLogin({
+//   onSuccess: responseGoogle,
+//   onError: (error) => console.log("Google login error:", error),
+//   flow: "auth-code",
+// });
 
 
 
@@ -154,28 +154,7 @@ const Login = () => {
             Login
           </button>
         </form>
-        <p className="text-center mt-3">OR</p>
-      
-      
-      {/*login google button  */}
-        <button
-          onClick={googleLogin()}
-          type="submit"
-          className="btn btn-purple   text-light"
-          style={{
-            marginTop: "0px",
-            backgroundColor: "indigo",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <img
-            style={{ height: "30px" }}
-            src="https://logos-world.net/wp-content/uploads/2020/09/Google-Symbol.png"
-            alt=""
-          />
-        </button>
+     
       </div>
     </div>
   );

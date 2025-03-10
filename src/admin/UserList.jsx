@@ -6,7 +6,7 @@ const UserList = () => {
   const [userList, setUserList] = useState([]);
   const {deletUserByid}=useContext(AppContext)
   // console.log(userList);
-const url="http://localhost:1000/api"
+const url="https://mernstack1stproject-3.onrender.com/api"
 // "https://mernstack1stproject-1.onrender.com/api"
   //get all user List
   const getAllUserList = async () => {

@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 const AppState = ({ children }) => {
 //want to 15
 
-  const url ="http://localhost:1000/api"
+  const url ="https://mernstack1stproject-3.onrender.com/api"
   // "https://mernstack1stproject-1.onrender.com/api"
 
   const [isauthenticated, setisauthenticated] = useState(false);
@@ -34,6 +34,8 @@ const [reload, setreload] = useState(false);
           },
           withCredentials: true,
         });
+        // console.log(response.data);
+        
 
         const res = await response.data;
 
